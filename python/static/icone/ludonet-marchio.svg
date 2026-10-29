@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Ludonet</title>
+  <desc id="desc">Monogramma L con nodi connessi, simbolo di gioco in rete.</desc>
+  <defs>
+    <linearGradient id="anello" x1="90" y1="70" x2="430" y2="445" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#795cff"/>
+      <stop offset="1" stop-color="#4c32c9"/>
+    </linearGradient>
+    <linearGradient id="segno" x1="160" y1="145" x2="360" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#39d9c2"/>
+      <stop offset="1" stop-color="#20a99b"/>
+    </linearGradient>
+    <filter id="ombra" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#39258f" flood-opacity=".22"/>
+    </filter>
+  </defs>
+
+  <circle cx="256" cy="256" r="205" fill="#ffffff" stroke="url(#anello)" stroke-width="26" filter="url(#ombra)"/>
+  <circle cx="256" cy="256" r="174" fill="#f6f3ff"/>
+
+  <path d="M172 145v168c0 42 34 76 76 76h105"
+        fill="none" stroke="url(#segno)" stroke-width="48"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <path d="M172 217l91 65 90-104M263 282l90 107"
+        fill="none" stroke="#795cff" stroke-width="18"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <circle cx="172" cy="145" r="30" fill="#ffc857" stroke="#ffffff" stroke-width="10"/>
+  <circle cx="172" cy="217" r="23" fill="#39d9c2" stroke="#ffffff" stroke-width="9"/>
+  <circle cx="263" cy="282" r="27" fill="#795cff" stroke="#ffffff" stroke-width="10"/>
+  <circle cx="353" cy="178" r="25" fill="#ff8a65" stroke="#ffffff" stroke-width="9"/>
+  <circle cx="353" cy="389" r="30" fill="#ffc857" stroke="#ffffff" stroke-width="10"/>
+
+  <path d="M326 111h48M350 87v48" stroke="#795cff" stroke-width="14" stroke-linecap="round"/>
+</svg>

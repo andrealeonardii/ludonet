@@ -1,0 +1,27 @@
+{
+  "architettura": [
+    84,
+    128,
+    64,
+    7
+  ],
+  "parametri": 19591,
+  "seed": 42,
+  "epoca": 155,
+  "epoche_richieste": 160,
+  "profondita_insegnante": 4,
+  "esempi_generati": 750000,
+  "torch": "2.7.1+cu126",
+  "numpy": "2.3.1",
+  "sha256_dati": "7b3f5af7c60dfc3725a20f043705ba6c138813380d7228a04af826d247cc95c9",
+  "posizioni_training_distinte": 362248,
+  "validazione": {
+    "posizioni": 39948,
+    "accordo_insegnante_percento": 72.65,
+    "vittorie_immediate": 6059,
+    "vittorie_colte_percento": 96.9,
+    "minacce_bloccabili": 5979,
+    "minacce_bloccate_percento": 96.72
+  },
+  "nota": "Validazione usata per scegliere i pesi; non \u00e8 un test indipendente."
+}

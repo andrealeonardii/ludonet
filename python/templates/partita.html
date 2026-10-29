@@ -1,0 +1,30 @@
+{% if partita %}
+    {% if justone_selezionato %}
+        {% include 'justone.html' %}
+    {% elif nomi_selezionato %}
+        {% include 'nomi.html' %}
+    {% elif quiz_selezionato %}
+        {% include 'quiz.html' %}
+    {% else %}
+        {% include 'forza4.html' %}
+    {% endif %}
+{% elif gioco_corrente %}
+    {% set avvii = {'Forza 4': 'azione_forza4', 'Quiz': 'azione_quiz', 'Nomi, cose, città': 'azione_nomi', 'Just One': 'azione_justone'} %}
+    <section class="card pannello-giochi anteprima-gioco">
+        <h2>{{ gioco_corrente.nome }}</h2>
+        {% if utente.is_admin and gioco_corrente.nome in avvii %}
+        <form method="post" action="{{ url_for(avvii[gioco_corrente.nome], azione='avvia') }}">
+            <button class="btn-primary" {% if numero_partecipanti < minimo_giocatori %}disabled{% endif %}>Avvia {{ gioco_corrente.nome }}</button>
+        </form>
+        {% else %}
+        <p>In attesa che l’admin avvii la partita.</p>
+        {% endif %}
+        {% if numero_partecipanti < minimo_giocatori %}
+        <p>Servono almeno {{ minimo_giocatori }} giocatori.</p>
+        {% endif %}
+    </section>
+{% endif %}
+
+{% if premio_monete is not none and premio_monete is defined %}
+<p class="premio-monete" role="status">Partita conclusa: <img class="icona-ludocoin" src="{{ url_for('static', filename='icone/ludocoin.svg') }}" alt="" width="28" height="28"> +{{ premio_monete }} Ludocoin.</p>
+{% endif %}

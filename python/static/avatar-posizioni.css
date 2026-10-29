@@ -1,0 +1,18 @@
+/* Posizioni delle immagini: collo a 130 px e vita a 275 px su una figura 240 × 440. */
+.avatar-figura img[src*="/avatar/corpo/astronauta-rosa.png"] { --larghezza: 97.910%; --altezza: 47.033%; --sinistra: 1.045%; --alto: 24.098%; }
+.avatar-figura img[src*="/avatar/corpo/astronauta-turchese.png"] { --larghezza: 97.036%; --altezza: 46.879%; --sinistra: 1.482%; --alto: 24.262%; }
+.avatar-figura img[src*="/avatar/corpo/felpa-arancione.png"] { --larghezza: 120.488%; --altezza: 54.682%; --sinistra: -10.196%; --alto: 22.968%; }
+.avatar-figura img[src*="/avatar/corpo/peluche-arancione.png"] { --larghezza: 97.209%; --altezza: 50.989%; --sinistra: 1.357%; --alto: 22.862%; }
+.avatar-figura img[src*="/avatar/corpo/robot.png"] { --larghezza: 118.511%; --altezza: 63.101%; --sinistra: -9.255%; --alto: 21.692%; }
+.avatar-figura img[src*="/avatar/piedi/astronauta-rosa.png"] { --larghezza: 117.946%; --altezza: 43.542%; --sinistra: -9.114%; --alto: 57.888%; }
+.avatar-figura img[src*="/avatar/piedi/astronauta-turchese.png"] { --larghezza: 116.890%; --altezza: 43.542%; --sinistra: -8.585%; --alto: 57.819%; }
+.avatar-figura img[src*="/avatar/piedi/jeans-blu.png"] { --larghezza: 116.370%; --altezza: 42.518%; --sinistra: -8.510%; --alto: 57.383%; }
+.avatar-figura img[src*="/avatar/piedi/peluche-arancione.png"] { --larghezza: 106.199%; --altezza: 43.704%; --sinistra: -3.692%; --alto: 56.378%; }
+.avatar-figura img[src*="/avatar/piedi/robot.png"] { --larghezza: 124.702%; --altezza: 42.518%; --sinistra: -12.351%; --alto: 57.654%; }
+.avatar-figura img[src*="/avatar/testa/astronauta.png"] { --larghezza: 60.643%; --altezza: 33.078%; --sinistra: 19.727%; --alto: 0.337%; }
+.avatar-figura img[src*="/avatar/testa/gatto.png"] { --larghezza: 71.302%; --altezza: 38.892%; --sinistra: 14.349%; --alto: -1.780%; }
+.avatar-figura img[src*="/avatar/testa/ragazza.png"] { --larghezza: 66.510%; --altezza: 36.278%; --sinistra: 16.533%; --alto: -1.232%; }
+.avatar-figura img[src*="/avatar/testa/ragazzo.png"] { --larghezza: 64.095%; --altezza: 34.961%; --sinistra: 17.237%; --alto: -0.650%; }
+.avatar-figura img[src*="/avatar/testa/robot-femminile.png"] { --larghezza: 64.730%; --altezza: 35.307%; --sinistra: 17.687%; --alto: -0.794%; }
+.avatar-figura img[src*="/avatar/testa/robot.png"] { --larghezza: 65.972%; --altezza: 35.985%; --sinistra: 16.961%; --alto: -1.230%; }
+.avatar-figura img[src*="/avatar/testa/zucca.png"] { --larghezza: 59.321%; --altezza: 32.357%; --sinistra: 20.339%; --alto: 0.255%; }

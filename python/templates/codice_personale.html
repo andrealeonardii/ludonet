@@ -1,0 +1,10 @@
+{% if session.get('codice_personale') %}
+<details class="codice-personale">
+    <summary aria-expanded="false">
+        <span class="testo-mostra-codice">Mostra codice personale</span>
+        <span class="testo-nascondi-codice">Nascondi codice personale</span>
+    </summary>
+    <strong>{{ session['codice_personale'] }}</strong>
+    <p>Conservalo: serve per accedere al tuo profilo. Non è il codice stanza e non va condiviso.</p>
+</details>
+{% endif %}

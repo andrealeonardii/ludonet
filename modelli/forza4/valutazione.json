@@ -1,0 +1,26 @@
+{
+  "sha256_pesi": "2e5058fc4277e0494efdb4bd04bee8a247c891f0f169095f014476317ddeb5c3",
+  "seed_test": 2026,
+  "posizioni_escluse_per_sovrapposizione": 5741,
+  "test_indipendente": {
+    "posizioni": 14804,
+    "accordo_insegnante_percento": 71.62,
+    "vittorie_immediate": 2347,
+    "vittorie_colte_percento": 96.34,
+    "minacce_bloccabili": 2326,
+    "minacce_bloccate_percento": 95.61
+  },
+  "contro_casuale": {
+    "vittorie": 199,
+    "pareggi": 0,
+    "sconfitte": 1,
+    "partite": 200
+  },
+  "contro_tattico": {
+    "vittorie": 190,
+    "pareggi": 0,
+    "sconfitte": 10,
+    "partite": 200
+  },
+  "nota": "Colori alternati. Il tattico vince o blocca in una mossa, altrimenti sceglie a caso. Non \u00e8 un solver."
+}

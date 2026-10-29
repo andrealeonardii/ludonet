@@ -1,0 +1,56 @@
+{% if forza4_selezionato %}
+<section class="card pannello-giochi" aria-labelledby="titolo-partita" data-in-sala="{{ 1 if partita and partita.in_sala else 0 }}" data-partita-id="{{ partita.id if partita else '' }}">
+    <h2 id="titolo-partita">Forza 4</h2>
+    {% if partita %}
+    <p class="legenda-pedine"><span>🔴 {{ partita.rosso }}</span><span>🟡 {{ partita.giallo }}</span></p>
+    {% if partita.risultato == 3 %}
+    <p class="stato-partita" role="status">Pareggio!</p>
+    {% elif partita.risultato != 0 %}
+    <p class="stato-partita" role="status">Ha vinto {{ partita.rosso if partita.risultato == 1 else partita.giallo }}!</p>
+    {% else %}
+    {% set prossimo = partita.rosso if partita.turno == 1 else partita.giallo %}
+    <p class="stato-partita" role="status">Turno di {{ prossimo }} {{ '🔴' if partita.turno == 1 else '🟡' }}</p>
+    {% if bot and prossimo == bot.username %}
+        {% if richiesta_bot and richiesta_bot.stato == 'attesa' %}
+        <p role="status">NickBot sta pensando…</p>
+        {% else %}
+        <p role="status">{{ richiesta_bot.messaggio if richiesta_bot else 'NickBot è pronto a giocare.' }}</p>
+        {% if utente.is_admin %}
+        <form method="post" action="{{ url_for('gestisci_bot', azione='riprova') }}">
+            <button class="btn-secondary">Riprova turno AI</button>
+        </form>
+        {% endif %}
+        {% endif %}
+    {% endif %}
+    {% endif %}
+    <form method="post" action="{{ url_for('azione_forza4', azione='muovi') }}">
+        <input type="hidden" name="partita_id" value="{{ partita.id }}">
+        <input type="hidden" name="griglia" value="{{ partita.griglia }}">
+        <div class="colonne-forza4">
+            {% for colonna in range(7) %}
+            <button class="btn-secondary" name="colonna" value="{{ colonna }}"
+                    aria-label="Gioca nella colonna {{ colonna + 1 }}"
+                    {% if partita.risultato != 0 or prossimo != utente.username or partita.griglia[colonna] != '0' %}disabled{% endif %}>{{ colonna + 1 }} ↓</button>
+            {% endfor %}
+        </div>
+    </form>
+    <div class="tabellone-forza4" role="group" aria-label="Tabellone Forza 4: sei righe e sette colonne">
+        {% for pedina in partita.griglia %}
+        <span class="pedina pedina-{{ pedina }}" role="img"
+              aria-label="Riga {{ loop.index0 // 7 + 1 }}, colonna {{ loop.index0 % 7 + 1 }}: {{ 'vuota' if pedina == '0' else ('rossa' if pedina == '1' else 'gialla') }}"></span>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if numero_partecipanti != 2 %}
+    <p>In attesa di un secondo giocatore.</p>
+    {% elif not partita or partita.risultato != 0 %}
+        {% if utente.is_admin %}
+        <form method="post" action="{{ url_for('azione_forza4', azione='avvia') }}">
+            <button class="btn-primary">{{ 'Rivincita' if partita else 'Avvia Forza 4' }}</button>
+        </form>
+        {% else %}
+        <p>In attesa che l’admin avvii la partita.</p>
+        {% endif %}
+    {% endif %}
+</section>
+{% endif %}

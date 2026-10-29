@@ -1,0 +1,563 @@
+/* Composizione Ludonet: centrata, compatta e leggibile. */
+
+body {
+    padding: 24px;
+}
+
+/* Nella home la sfilata comincia quasi dal bordo superiore della pagina. */
+body:has(.intestazione-accesso) {
+    padding-top: 6px;
+}
+
+main {
+    width: min(960px, 100%);
+}
+
+/* Home: marchio centrale e quattro riquadri regolari. */
+.intestazione-accesso {
+    position: relative;
+    display: grid;
+    min-height: 214px;
+    max-width: none;
+    margin: 0 0 24px;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    text-align: center;
+}
+
+.intestazione-accesso .marchio {
+    position: absolute;
+    top: 57%;
+    left: 50%;
+    z-index: 3;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+.intestazione-accesso .logo {
+    width: 112px;
+    height: 112px;
+}
+
+.intestazione-accesso .marchio span {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    -webkit-text-stroke: 2px #fff;
+    paint-order: stroke fill;
+    filter: drop-shadow(0 3px 5px rgba(36, 48, 74, .18));
+}
+
+.intestazione-accesso > p {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    left: 20px;
+    z-index: 3;
+    max-width: 560px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Sfilata decorativa di avatar dietro al marchio. */
+.sfilata-avatar {
+    position: absolute;
+    inset: 0 0 -8px;
+    z-index: 1;
+    display: flex;
+    width: max-content;
+    align-items: flex-end;
+    opacity: .72;
+    animation: sfilata-ludonet 28s linear infinite;
+    pointer-events: none;
+}
+
+.gruppo-avatar {
+    display: flex;
+    height: 100%;
+    flex: 0 0 auto;
+    align-items: flex-end;
+    gap: 34px;
+    padding: 2px 17px 4px;
+}
+
+.avatar-sfilata {
+    position: relative;
+    display: block;
+    width: 112px;
+    height: 206px;
+    flex: 0 0 112px;
+    filter: drop-shadow(0 8px 8px rgba(36, 48, 74, .12));
+}
+
+
+@keyframes sfilata-ludonet {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sfilata-avatar {
+        animation: none;
+        transform: translateX(-12%);
+    }
+}
+
+.layout-accesso {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: stretch;
+}
+
+/* I quattro box della home hanno dimensioni identiche. */
+.layout-accesso:not(.layout-profilo) {
+    grid-template-rows: repeat(2, 320px);
+}
+
+.layout-accesso:not(.layout-profilo) .card {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.colonna-accesso {
+    display: contents;
+}
+
+.layout-accesso .card {
+    min-height: 230px;
+}
+
+/* Home desktop: accesso e registrazione sopra, ospite e stanze sotto. */
+.layout-accesso .colonna-accesso > .sezione-profilo:nth-of-type(1) { grid-column: 1; grid-row: 1; }
+.layout-accesso .colonna-accesso > .sezione-profilo:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+.layout-accesso #accesso { grid-column: 1; grid-row: 2; }
+.layout-accesso .stanze-disponibili { grid-column: 2; grid-row: 2; }
+
+/* Tutte le azioni della home condividono lo stesso stile blu. */
+.layout-accesso button:not([hidden]) {
+    border-color: var(--blue);
+    background: var(--blue);
+    color: #fff;
+}
+
+.layout-accesso form.card {
+    justify-content: flex-start;
+}
+
+.layout-accesso form.card button:last-child,
+.layout-accesso .sezione-profilo form button {
+    margin-top: auto;
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.layout-accesso:not(.layout-profilo) form.card {
+    padding-bottom: 22px;
+}
+
+.stanze-disponibili {
+    display: flex;
+    min-height: 230px;
+    max-height: 340px;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#stanze {
+    display: grid;
+    min-height: 0;
+    flex: 1 1 auto;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+/* Dopo il login mostra profilo e stanze affiancati, senza box vuoto. */
+.layout-profilo .sezione-profilo {
+    display: flex;
+    grid-column: 1;
+    grid-row: 1;
+    height: 100%;
+    flex-direction: column;
+}
+
+.profilo-contenuti {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 130px;
+    gap: 18px;
+    align-items: start;
+}
+
+/* Mantiene stabile il box quando il codice personale viene nascosto. */
+.layout-profilo .codice-personale {
+    min-height: 150px;
+}
+
+.codice-personale .testo-nascondi-codice {
+    display: none;
+}
+
+.codice-personale[open] .testo-mostra-codice {
+    display: none;
+}
+
+.codice-personale[open] .testo-nascondi-codice {
+    display: inline;
+}
+
+.profilo-avatar-home {
+    text-align: center;
+}
+
+.profilo-avatar-home h3 {
+    margin-bottom: 8px;
+    font-size: .9rem;
+}
+
+.pulsante-avatar-home {
+    position: relative;
+    inset: auto;
+    width: 92px;
+    height: 150px;
+    margin: 0 auto;
+    padding: 5px;
+    border: 1px solid #cdd7ec;
+    background: var(--green-soft);
+}
+
+.pulsante-avatar-home .avatar-mini {
+    width: 70px;
+    height: 128px;
+}
+
+.layout-profilo .sezione-profilo > form {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+}
+
+.layout-profilo .sezione-profilo > form button {
+    min-width: 190px;
+}
+
+.layout-profilo .stanze-disponibili {
+    grid-column: 2;
+    grid-row: 1;
+    height: 100%;
+}
+
+.layout-profilo .form-accesso-tecnico {
+    display: none;
+}
+
+#stanze .riga-stanza {
+    padding: 10px 12px;
+}
+
+#stanze .riga-stanza p {
+    line-height: 1.3;
+}
+
+.stanze-disponibili .crea-stanza {
+    width: 100%;
+    margin-top: 16px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    flex-shrink: 0;
+}
+
+/* Sala: niente sidebar; intestazione e contenuti in un flusso chiaro. */
+.layout-stanza {
+    display: block;
+    width: min(900px, 100%);
+}
+
+.intestazione-stanza {
+    position: relative;
+    top: auto;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+        "brand greeting avatar"
+        "code coins avatar";
+    align-items: center;
+    gap: 8px 18px;
+    margin-bottom: 18px;
+    padding: 14px 18px;
+}
+
+.intestazione-stanza .marchio {
+    grid-area: brand;
+    margin: 0;
+    font-size: 1.35rem;
+}
+
+.intestazione-stanza .logo {
+    width: 42px;
+    height: 42px;
+}
+
+#saluto-stanza {
+    grid-area: greeting;
+    margin: 0;
+}
+
+.intestazione-stanza .codice-stanza {
+    grid-area: code;
+    margin: 0;
+}
+
+.intestazione-stanza .monete {
+    grid-area: coins;
+    width: fit-content;
+    margin: 0;
+}
+
+.pulsante-avatar {
+    position: static;
+    grid-area: avatar;
+    width: 58px;
+    height: 76px;
+}
+
+.avatar-mini {
+    width: 38px;
+    height: 68px;
+}
+
+#sala {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+#sala > .card {
+    width: 100%;
+}
+
+#partecipanti {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.partecipante {
+    min-width: 170px;
+    flex: 1 1 190px;
+    padding: 9px 11px;
+}
+
+#comandi-bot {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#comandi-bot form {
+    flex: 1 1 220px;
+}
+
+.catalogo-giochi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.scheda-gioco {
+    min-height: 86px;
+    padding: 11px 13px;
+}
+
+.icona-gioco {
+    width: 48px;
+    height: 48px;
+}
+
+.logout-stanza {
+    margin-top: 16px;
+}
+
+/* Partite: pannello contenuto e visibile senza scroll eccessivo. */
+#partita {
+    width: min(700px, 100%);
+    margin: 0 auto;
+}
+
+#partita > .card,
+#partita .card {
+    padding: 16px 18px;
+}
+
+#torna-stanza {
+    width: min(700px, 100%);
+    margin: 0 auto 10px;
+}
+
+#torna-stanza .collegamento-pulsante {
+    margin: 0;
+}
+
+.tabellone-forza4 {
+    width: min(430px, 72vh, 100%);
+    padding: 9px;
+    gap: 5px;
+    border-radius: 14px;
+}
+
+.colonne-forza4 {
+    width: min(430px, 72vh, 100%);
+    margin: 0 auto;
+    gap: 5px;
+}
+
+.colonne-forza4 button {
+    min-height: 32px;
+    padding: 3px;
+    font-size: .8rem;
+}
+
+.legenda-pedine {
+    margin-bottom: 8px;
+}
+
+.stato-partita {
+    margin-bottom: 10px;
+}
+
+.risposte-quiz {
+    gap: 8px;
+}
+
+.risposte-quiz button {
+    min-height: 48px;
+}
+
+.form-nomi,
+.form-justone {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.risultati-nomi {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.classifica-quiz,
+.classifica-nomi {
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+/* Il dialog dell'avatar rimane ampio, ma non supera la finestra. */
+#editor-avatar {
+    width: min(620px, calc(100% - 28px));
+    max-height: 90vh;
+}
+
+/* Tablet e telefono: una sola colonna, senza elementi sovradimensionati. */
+@media (max-width: 700px) {
+    body {
+        padding: 12px;
+    }
+
+    .layout-accesso {
+        grid-template-columns: 1fr;
+    }
+
+    .layout-accesso:not(.layout-profilo) {
+        grid-template-rows: none;
+    }
+
+    .layout-accesso:not(.layout-profilo) .card {
+        height: auto;
+        min-height: 230px;
+        overflow: visible;
+    }
+
+    .layout-accesso .colonna-accesso > .sezione-profilo:nth-of-type(1),
+    .layout-accesso .colonna-accesso > .sezione-profilo:nth-of-type(2),
+    .layout-accesso #accesso,
+    .layout-accesso .stanze-disponibili {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .layout-accesso .card {
+        min-height: auto;
+    }
+
+    .layout-profilo .sezione-profilo,
+    .layout-profilo .stanze-disponibili {
+        grid-column: 1;
+        grid-row: auto;
+        height: auto;
+    }
+
+    .profilo-contenuti {
+        grid-template-columns: minmax(0, 1fr) 110px;
+    }
+
+    .pulsante-avatar-home {
+        width: 82px;
+        height: 136px;
+    }
+
+    .pulsante-avatar-home .avatar-mini {
+        width: 62px;
+        height: 114px;
+    }
+
+    .stanze-disponibili {
+        max-height: 320px;
+    }
+
+    .intestazione-stanza {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "brand avatar"
+            "greeting avatar"
+            "code coins";
+    }
+
+    .catalogo-giochi,
+    .form-nomi,
+    .form-justone,
+    .risposte-quiz {
+        grid-template-columns: 1fr;
+    }
+
+    .partecipante {
+        flex-basis: 100%;
+    }
+
+    #partita > .card,
+    #partita .card {
+        padding: 14px;
+    }
+}
+
+@media (max-height: 720px) and (min-width: 701px) {
+    .tabellone-forza4,
+    .colonne-forza4 {
+        width: min(370px, 62vh);
+    }
+
+    .intestazione-stanza {
+        margin-bottom: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}

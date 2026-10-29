@@ -1,0 +1,102 @@
+<section class="card pannello-giochi" aria-labelledby="titolo-nomi"
+         data-in-sala="{{ 1 if partita.in_sala else 0 }}" data-partita-id="{{ partita.id }}">
+    <h2 id="titolo-nomi">Nomi, cose, città</h2>
+    {% if partita.finita %}
+        <p class="stato-nomi" role="status">Partita terminata!</p>
+        {% set massimo = classifica[0].punti %}
+        <p>Vincitori:
+            {% for giocatore in classifica if giocatore.punti == massimo %}
+                {{ giocatore.username }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+    {% else %}
+        <p class="stato-nomi" role="status">Manche {{ partita.turno }} di 3 · Risposte: {{ risposte_ricevute }}/{{ numero_partecipanti }}</p>
+        <p class="lettera-nomi">Lettera <strong>{{ lettera }}</strong></p>
+        {% if secondi_rimasti is not none and not tutti_pronti and not partita.valutato %}
+        <p id="timer-nomi" role="timer" data-secondi="{{ secondi_rimasti }}"
+           data-url="{{ url_for('scadenza_nomi') }}">Tempo rimasto: <strong>5</strong> secondi</p>
+        {% endif %}
+        {% if partita.valutato %}
+            <h3>Risultati della manche</h3>
+            <ul class="risultati-nomi">
+            {% for risposta in risposte %}
+                <li><strong>{{ risposta.username }} · {{ categorie[risposta.categoria] }}</strong>
+                    <span>{{ risposta.testo or '—' }} · {{ risposta.punti }} punti</span></li>
+            {% endfor %}
+            </ul>
+        {% elif tutti_pronti %}
+            <h3>Vota le risposte</h3>
+            <p>Servono {{ soglia_voti }} 👎 degli avversari per annullare una parola. Vuote o con iniziale errata valgono 0; parole uguali valide valgono 5, le altre 10.</p>
+            <p>Voti confermati: {{ votanti }}/{{ numero_partecipanti }}</p>
+            {% if not ha_votato %}
+            <form class="valutazione-nomi" method="post" action="{{ url_for('azione_nomi', azione='valuta') }}"
+                  data-conserva="{{ partita.id }}-{{ partita.turno }}-voti">
+                <input type="hidden" name="partita_id" value="{{ partita.id }}">
+                <input type="hidden" name="turno" value="{{ partita.turno }}">
+                {% for categoria, etichetta in categorie.items() %}
+                <h4 class="categoria-voti">{{ etichetta }}</h4>
+                {% for risposta in risposte if risposta.categoria == categoria %}
+                <div class="risposta-nomi">
+                    <span><strong>{{ risposta.username }}</strong>
+                        <span>{{ risposta.testo or '—' }}</span></span>
+                    {% if risposta.username != utente.username and risposta.ammissibile %}
+                    <label class="voto-contrario">
+                        <input type="checkbox" name="contestate" value="{{ risposta.id }}"
+                               aria-label="Contesta {{ categorie[risposta.categoria] }} di {{ risposta.username }}: {{ risposta.testo }}">
+                        <span aria-hidden="true">👎</span>
+                    </label>
+                    {% else %}<small>{{ '0 punti' if not risposta.ammissibile else 'La tua risposta' }}</small>{% endif %}
+                </div>
+                {% endfor %}
+                {% endfor %}
+                <p>Seleziona 👎 solo per le parole che non accetti. Conferma anche se sono tutte corrette.</p>
+                <button class="btn-primary">Conferma voti</button>
+            </form>
+            {% else %}
+            <p>Voti registrati. Attendi gli altri giocatori.</p>
+            {% for categoria, etichetta in categorie.items() %}
+            <h4 class="categoria-voti">{{ etichetta }}</h4>
+            <ul class="risultati-nomi">
+                {% for risposta in risposte if risposta.categoria == categoria %}
+                <li><strong>{{ risposta.username }}</strong>
+                    <span>{{ risposta.testo or '—' }}</span></li>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+            {% endif %}
+        {% elif ha_risposto %}
+            <p>Risposte registrate. In attesa degli altri giocatori.</p>
+        {% else %}
+            <p>Il primo invio lascia 5 secondi agli altri. Le parole già scritte vengono salvate automaticamente.</p>
+            <p id="errore-bozza" class="errore" role="status"></p>
+            <p>Scrivi una parola per categoria con la lettera {{ lettera }}. Puoi lasciare vuoto se non sai rispondere.</p>
+            <form class="form-nomi" method="post" action="{{ url_for('azione_nomi', azione='rispondi') }}"
+                  data-conserva="{{ partita.id }}-{{ partita.turno }}-risposte" data-bozza="{{ url_for('bozza_nomi') }}">
+                <input type="hidden" name="partita_id" value="{{ partita.id }}">
+                <input type="hidden" name="turno" value="{{ partita.turno }}">
+                {% for categoria, etichetta in categorie.items() %}
+                <label for="risposta-{{ categoria }}">{{ etichetta }}</label>
+                <input id="risposta-{{ categoria }}" name="{{ categoria }}" type="text" maxlength="60" autocomplete="off" value="{{ bozza[categoria] }}">
+                {% endfor %}
+                <button class="btn-primary">Invia risposte</button>
+            </form>
+        {% endif %}
+    {% endif %}
+    {% if partita.valutato or partita.finita %}
+        <h3>Classifica{{ ' finale' if partita.finita else '' }}</h3>
+        <ul class="elenco-stanze classifica-nomi">
+            {% for giocatore in classifica %}
+            <li class="riga-stanza"><div>{{ giocatore.username }}</div><span>{{ giocatore.punti }} punti</span></li>
+            {% endfor %}
+        </ul>
+        {% if utente.is_admin %}
+        <form method="post" action="{{ url_for('azione_nomi', azione='avvia' if partita.finita else 'prossima') }}">
+            <input type="hidden" name="partita_id" value="{{ partita.id }}">
+            <input type="hidden" name="turno" value="{{ partita.turno }}">
+            <button class="btn-primary">{{ 'Nuova partita' if partita.finita else ('Mostra classifica finale' if partita.turno == 3 else 'Prossima manche') }}</button>
+        </form>
+        {% else %}
+        <p>Attendi che l’admin prosegua.</p>
+        {% endif %}
+    {% endif %}
+</section>

@@ -1,0 +1,6 @@
+<h3>Classifica{{ ' finale' if partita.finita else '' }}</h3>
+<ul class="elenco-stanze classifica-quiz">
+    {% for giocatore in classifica %}
+    <li class="riga-stanza"><div>{{ giocatore.username }}</div><span>{{ giocatore.punti }} punti</span></li>
+    {% endfor %}
+</ul>

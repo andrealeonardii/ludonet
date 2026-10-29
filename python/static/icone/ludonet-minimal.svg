@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title desc">
+  <title id="title">Ludonet</title>
+  <desc id="desc">Una L sorridente formata da due forme morbide.</desc>
+  <defs>
+    <linearGradient id="blu" x1="45" y1="35" x2="168" y2="197" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F7CFF"/>
+      <stop offset="1" stop-color="#315ED6"/>
+    </linearGradient>
+  </defs>
+  <circle cx="120" cy="120" r="104" fill="#FFFFFF"/>
+  <path d="M78 55v94c0 23 18 41 41 41h51"
+        fill="none" stroke="url(#blu)" stroke-width="32"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="78" cy="55" r="17" fill="#FF86A8"/>
+  <circle cx="170" cy="190" r="17" fill="#65CFA0"/>
+  <path d="M117 115c14 15 31 15 45 0"
+        fill="none" stroke="#FFAE8D" stroke-width="12"
+        stroke-linecap="round"/>
+</svg>

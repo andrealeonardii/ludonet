@@ -1,0 +1,32 @@
+<dialog id="editor-avatar" aria-labelledby="titolo-avatar">
+    <form id="form-avatar" action="{{ url_for('salva_avatar') }}" method="post">
+        <h2 id="titolo-avatar">Il tuo personaggio</h2>
+        {% include 'codice_personale.html' %}
+        {% set avatar_ospite = utente.is_ospite if utente is defined else false %}
+        {% if avatar_ospite %}<p>Personaggio temporaneo. Per Ludocoin e acquisti serve un profilo.</p>{% endif %}
+        <p class="monete" {% if avatar_ospite %}hidden{% endif %}><img class="icona-ludocoin" src="{{ url_for('static', filename='icone/ludocoin.svg') }}" alt="" width="28" height="28"> Ludocoin: <strong id="saldo-avatar">{{ saldo_monete }}</strong></p>
+        <div class="compositore-avatar">
+            <div class="avatar-figura avatar-anteprima" aria-label="Anteprima personaggio">
+                {% for parte, nome in avatar_scelto.items() %}
+                <img data-anteprima="{{ parte }}" src="{{ url_for('static', filename='avatar/' ~ parte ~ '/' ~ nome ~ '.png', v=2) }}" alt="">
+                {% endfor %}
+            </div>
+            {% for parte, etichetta in [('testa', 'Testa'), ('corpo', 'Corpo'), ('piedi', 'Gambe')] %}
+            <div class="frecce-avatar frecce-{{ parte }}">
+                <button type="button" data-parte="{{ parte }}" data-passo="-1" aria-label="{{ etichetta }}: precedente">‹</button>
+                <span>{{ etichetta }}</span>
+                <button type="button" class="lucchetto-avatar" data-acquista="{{ parte }}" hidden>🔒 <b data-prezzo></b> <img class="icona-ludocoin" src="{{ url_for('static', filename='icone/ludocoin.svg') }}" alt="" width="28" height="28"></button>
+                <button type="button" data-parte="{{ parte }}" data-passo="1" aria-label="{{ etichetta }}: successivo">›</button>
+                <input type="hidden" name="{{ parte }}" value="{{ avatar_scelto[parte] }}">
+            </div>
+            {% endfor %}
+        </div>
+        <p id="aiuto-avatar" hidden>Premi il lucchetto per acquistare i pezzi scelti, poi salva il personaggio.</p>
+        <p id="errore-avatar" class="errore" role="alert"></p>
+        <div class="azioni-avatar">
+            <button type="button" id="chiudi-avatar" class="btn-secondary">Annulla</button>
+            <button type="submit" id="salva-avatar" class="btn-primary">Salva</button>
+        </div>
+    </form>
+</dialog>
+<script id="dati-avatar" type="application/json">{{ {'catalogo': catalogo_avatar, 'scelta': avatar_scelto, 'base': url_for('static', filename='avatar/'), 'acquista': url_for('acquista_avatar'), 'economia': url_for('saldo_economia')} | tojson }}</script>

@@ -1,0 +1,57 @@
+<section class="card pannello-giochi" aria-labelledby="titolo-quiz"
+         data-in-sala="{{ 1 if partita and partita.in_sala else 0 }}"
+         data-partita-id="{{ partita.id if partita else '' }}">
+    <h2 id="titolo-quiz">Quiz</h2>
+    {% if not partita %}
+        <p>Cinque domande, quattro opzioni e un punto per risposta corretta.</p>
+        {% if numero_partecipanti < 2 %}
+        <p>In attesa di almeno un secondo giocatore.</p>
+        {% elif utente.is_admin %}
+        <form method="post" action="{{ url_for('azione_quiz', azione='avvia') }}">
+            <button class="btn-primary">Avvia Quiz</button>
+        </form>
+        {% else %}
+        <p>In attesa che l’admin avvii il quiz.</p>
+        {% endif %}
+    {% elif partita.finita %}
+        <p class="stato-quiz" role="status">Quiz terminato!</p>
+        {% set massimo = classifica[0].punti %}
+        <p>Vincitori:
+            {% for giocatore in classifica if giocatore.punti == massimo %}
+                {{ giocatore.username }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        {% include 'classifica_quiz.html' %}
+        {% if utente.is_admin %}
+        <form method="post" action="{{ url_for('azione_quiz', azione='avvia') }}">
+            <button class="btn-primary">Nuovo Quiz</button>
+        </form>
+        {% endif %}
+    {% else %}
+        <p class="stato-quiz" role="status">Domanda {{ partita.domanda }} di 5 · Risposte: {{ risposte_ricevute }}/{{ numero_partecipanti }}</p>
+        <h3 class="domanda-quiz">{{ domanda.testo }}</h3>
+        {% if tutti_pronti %}
+            <p class="soluzione-quiz">Risposta corretta: <strong>{{ opzioni[domanda.corretta] }}</strong></p>
+            {% include 'classifica_quiz.html' %}
+            {% if utente.is_admin %}
+            <form method="post" action="{{ url_for('azione_quiz', azione='prossima') }}">
+                <input type="hidden" name="partita_id" value="{{ partita.id }}">
+                <input type="hidden" name="domanda" value="{{ partita.domanda }}">
+                <button class="btn-primary">{{ 'Mostra classifica finale' if partita.domanda == 5 else 'Prossima domanda' }}</button>
+            </form>
+            {% else %}
+            <p>Attendi che l’admin prosegua.</p>
+            {% endif %}
+        {% elif ha_risposto %}
+            <p>Risposta registrata. In attesa degli altri giocatori.</p>
+        {% else %}
+            <form method="post" class="risposte-quiz" action="{{ url_for('azione_quiz', azione='rispondi') }}">
+                <input type="hidden" name="partita_id" value="{{ partita.id }}">
+                <input type="hidden" name="domanda" value="{{ partita.domanda }}">
+                {% for opzione in opzioni %}
+                <button class="btn-secondary" name="risposta" value="{{ loop.index0 }}">{{ opzione }}</button>
+                {% endfor %}
+            </form>
+        {% endif %}
+    {% endif %}
+</section>

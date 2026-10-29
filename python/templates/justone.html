@@ -1,0 +1,62 @@
+<section class="card pannello-giochi" aria-labelledby="titolo-justone"
+         data-in-sala="{{ 1 if partita.in_sala else 0 }}" data-partita-id="{{ partita.id }}">
+    <h2 id="titolo-justone">Just One</h2>
+    <p class="punteggio-justone">Punteggio della squadra: {{ punteggio }} / {{ numero_manche }}</p>
+    {% if partita.finita %}
+        <p class="stato-justone" role="status">Partita terminata!</p>
+        {% if utente.is_admin %}
+        <form method="post" action="{{ url_for('azione_justone', azione='avvia') }}">
+            <button class="btn-primary">Nuova partita</button>
+        </form>
+        {% endif %}
+    {% else %}
+        <p class="stato-justone" role="status">Manche {{ partita.turno }} di {{ numero_manche }} · Indovina {{ indovino }}</p>
+        {% if parola %}<p class="parola-justone">Parola: <strong>{{ parola }}</strong></p>{% endif %}
+        {% if conclusa %}
+            <p class="esito-justone">{{ 'Parola indovinata! Un punto alla squadra.' if riuscito else ('Il giocatore ha passato.' if not tentativo else 'Risposta non corretta.') }}</p>
+            {% if tentativo %}<p>Risposta data: {{ tentativo }}</p>{% endif %}
+            {% if utente.is_admin %}
+            <form method="post" action="{{ url_for('azione_justone', azione='prossima') }}">
+                <input type="hidden" name="partita_id" value="{{ partita.id }}">
+                <input type="hidden" name="turno" value="{{ partita.turno }}">
+                <button class="btn-primary">{{ 'Mostra risultato finale' if partita.turno == numero_partecipanti else 'Prossima manche' }}</button>
+            </form>
+            {% else %}<p>Attendi che l’admin prosegua.</p>{% endif %}
+        {% elif tutti_pronti %}
+            <h3>Indizi rimasti</h3>
+            <ul class="indizi-justone">
+            {% for indizio in indizi_visibili %}<li>{{ indizio }}</li>
+            {% else %}<li>Nessun indizio: erano tutti duplicati.</li>{% endfor %}
+            </ul>
+            {% if sei_indovino %}
+            <p>Hai un solo tentativo. Puoi anche passare.</p>
+            <form class="form-justone" method="post" action="{{ url_for('azione_justone', azione='indovina') }}"
+                  data-conserva="{{ partita.id }}-{{ partita.turno }}-tentativo">
+                <input type="hidden" name="partita_id" value="{{ partita.id }}">
+                <input type="hidden" name="turno" value="{{ partita.turno }}">
+                <label for="tentativo-justone">La tua risposta</label>
+                <input id="tentativo-justone" type="text" name="tentativo" maxlength="60" required autocomplete="off">
+                <button class="btn-primary">Indovina</button>
+                <button class="btn-secondary" name="passa" value="1" formnovalidate>Passa</button>
+            </form>
+            {% else %}<p>Attendi la risposta di {{ indovino }}.</p>{% endif %}
+        {% else %}
+            <p class="contatore-indizi" role="status">Indizi ricevuti: {{ indizi_ricevuti }} / {{ numero_partecipanti - 1 }}</p>
+            {% if sei_indovino %}
+                <p>Gli altri stanno scrivendo gli indizi. Attendi senza guardare i loro schermi!</p>
+            {% elif ha_inviato %}
+                <p>Indizio registrato. In attesa degli altri.</p>
+            {% else %}
+                <p>Scrivi una sola parola. Gli indizi uguali saranno eliminati. Non usare la parola segreta, sue varianti o traduzioni.</p>
+                <form class="form-justone" method="post" action="{{ url_for('azione_justone', azione='indizio') }}"
+                      data-conserva="{{ partita.id }}-{{ partita.turno }}-indizio">
+                    <input type="hidden" name="partita_id" value="{{ partita.id }}">
+                    <input type="hidden" name="turno" value="{{ partita.turno }}">
+                    <label for="indizio-justone">Il tuo indizio</label>
+                    <input id="indizio-justone" type="text" name="indizio" maxlength="30" required autocomplete="off">
+                    <button class="btn-primary">Invia indizio</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</section>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ludonet — Accesso</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='icone/ludonet-minimal.svg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='ludonet.css', v=2) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='ludonet-refined.css', v=14) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='clean-contrast.css', v=2) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='avatar-posizioni.css', v=2) }}">
+</head>
+<body>
+    <main>
+        <header class="intestazione-accesso">
+            {% if not profilo %}
+            <div class="sfilata-avatar" aria-hidden="true">
+                {% set configurazioni_avatar = [
+                    ('gatto', 'felpa-arancione', 'robot'),
+                    ('robot', 'astronauta-rosa', 'jeans-blu'),
+                    ('ragazza', 'peluche-arancione', 'astronauta-turchese'),
+                    ('zucca', 'robot', 'peluche-arancione'),
+                    ('astronauta', 'felpa-arancione', 'astronauta-rosa'),
+                    ('robot-femminile', 'astronauta-turchese', 'robot'),
+                    ('ragazzo', 'robot', 'jeans-blu')
+                ] %}
+                {% for copia in range(2) %}
+                <div class="gruppo-avatar">
+                    {% for testa, corpo, piedi in configurazioni_avatar %}
+                    <span class="avatar-figura avatar-sfilata">
+                        <img src="{{ url_for('static', filename='avatar/piedi/' ~ piedi ~ '.png', v=2) }}" alt="">
+                        <img src="{{ url_for('static', filename='avatar/corpo/' ~ corpo ~ '.png', v=2) }}" alt="">
+                        <img src="{{ url_for('static', filename='avatar/testa/' ~ testa ~ '.png', v=2) }}" alt="">
+                    </span>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <h1 class="marchio">
+                <img class="logo" src="{{ url_for('static', filename='icone/ludonet-minimal.svg') }}" alt="Logo Ludonet" width="240" height="240">
+                <span>LUDONET</span>
+            </h1>
+        </header>
+
+        {% if errore %}<p class="errore" role="alert">{{ errore }}</p>{% endif %}
+        <div class="layout-accesso{% if profilo %} layout-profilo{% endif %}">
+        <div class="colonna-accesso">
+        {% if not profilo %}
+        <form method="post" class="card sezione-profilo">
+            <h2>Accedi al profilo</h2>
+            <label for="codice-personale">Codice personale</label>
+            <input id="codice-personale" name="codice_personale" type="password"
+                   inputmode="numeric" minlength="6" maxlength="6" pattern="[0-9]{6}"
+                   autocomplete="current-password" placeholder="Inserisci PIN a 6 cifre" required>
+            <p>Accedi al tuo profilo per accumulare Ludocoin e acquistare nuove skin per il tuo avatar.</p>
+            <button name="azione" value="accedi" class="btn-primary">Accedi</button>
+        </form>
+        <form method="post" class="card sezione-profilo">
+            <h2>Prima volta? Crea un profilo</h2>
+            <label for="username">Username</label>
+            <input id="username" name="username" maxlength="30" value="{{ username }}" autocomplete="username" required>
+            <p>Riceverai un codice personale di 6 cifre. Conservalo per ritrovare il tuo avatar.</p>
+            <button name="azione" value="registra" class="btn-secondary">Crea profilo</button>
+        </form>
+        {% else %}
+        <section class="card sezione-profilo">
+            <h2>Il tuo profilo: {{ profilo.username }}</h2>
+            <div class="profilo-contenuti">
+                {% include 'codice_personale.html' %}
+                <section class="profilo-avatar-home" aria-labelledby="titolo-avatar-home">
+                    <h3 id="titolo-avatar-home">Il mio avatar</h3>
+                    <button id="apri-avatar" class="pulsante-avatar pulsante-avatar-home" type="button"
+                            aria-label="Personalizza il mio avatar" aria-haspopup="dialog">
+                        <span class="avatar-figura avatar-mini">
+                            {% for parte, nome in avatar_scelto.items() %}
+                            <img data-mini="{{ parte }}"
+                                 src="{{ url_for('static', filename='avatar/' ~ parte ~ '/' ~ nome ~ '.png', v=2) }}" alt="">
+                            {% endfor %}
+                        </span>
+                    </button>
+                </section>
+            </div>
+            <p class="monete"><img class="icona-ludocoin" src="{{ url_for('static', filename='icone/ludocoin.svg') }}" alt="" width="28" height="28"> Ludocoin: <strong id="saldo-monete" data-url="{{ url_for('saldo_economia') }}">{{ saldo_monete }}</strong></p>
+            <form method="post" action="{{ url_for('logout') }}">
+                <button class="btn-secondary">Esci dal profilo</button>
+            </form>
+        </section>
+        {% endif %}
+        <form id="accesso" method="post"
+              class="{{ 'form-accesso-tecnico' if profilo else 'card' }}"
+              {% if profilo %}hidden{% endif %} novalidate>
+            {% if not profilo %}
+            <h2>Gioca senza account</h2>
+            <label for="username-ospite">Username temporaneo</label>
+            <input id="username-ospite" name="username" maxlength="30" value="{{ username }}" required>
+            <p>Con l’accesso temporaneo puoi entrare in una stanza disponibile oppure crearne una nuova, senza salvare codice personale, Ludocoin o acquisti.</p>
+            {% endif %}
+            <input type="hidden" id="codice" name="codice" value="">
+            <button type="submit" name="azione" value="entra" id="entra-con-codice" hidden>Entra</button>
+        </form>
+        </div>
+        <section class="card stanze-disponibili" aria-labelledby="titolo-stanze">
+            <h2 id="titolo-stanze">Stanze disponibili</h2>
+            <ul id="stanze" class="elenco-stanze" tabindex="0" aria-labelledby="titolo-stanze"
+                data-url="{{ url_for('elenco_stanze') }}"
+                data-websocket="{{ config['GO_WEBSOCKET_URL'] }}/ws?stanza=lobby">
+                {% for stanza in stanze %}
+                <li class="riga-stanza" data-codice="{{ stanza['codice'] }}">
+                    <div>
+                        <strong>Stanza {{ stanza['codice'] }}</strong>
+                        <p>Admin: {{ stanza['admin'] }} · Partecipanti: {{ stanza['partecipanti'] }}</p>
+                    </div>
+                    <button type="button" class="btn-secondary" data-codice="{{ stanza['codice'] }}"
+                            aria-label="Entra nella stanza {{ stanza['codice'] }}">Entra</button>
+                </li>
+                {% endfor %}
+            </ul>
+            <p id="nessuna-stanza" {% if stanze %}hidden{% endif %}>Nessuna stanza disponibile. Crea la prima!</p>
+            <button type="submit" form="accesso" name="azione" value="crea" class="btn-primary crea-stanza">Crea una nuova stanza</button>
+            <noscript>Inserisci lo username temporaneo oppure accedi al profilo, poi scegli o crea una stanza.</noscript>
+        </section>
+        </div>
+    </main>
+    {% if profilo %}
+    {% include 'avatar.html' %}
+    <script src="{{ url_for('static', filename='avatar-ludonet.js', v=2) }}" defer></script>
+    {% endif %}
+    <script src="{{ url_for('static', filename='profilo-home.js', v=1) }}" defer></script>
+    <script src="{{ url_for('static', filename='stanze.js') }}" defer></script>
+</body>
+</html>

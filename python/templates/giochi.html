@@ -1,0 +1,36 @@
+<h2 id="titolo-giochi">Giochi disponibili</h2>
+{% if utente.is_admin %}
+<p>Premi su un gioco per sceglierlo, poi avvia la partita.</p>
+{% else %}
+<p>Il gioco viene scelto e avviato dall’admin.</p>
+{% endif %}
+{% set icone = {'Forza 4': 'forza4.png', 'Quiz': 'quiz.png', 'Nomi, cose, città': 'nomi.png', 'Just One': 'justone.png'} %}
+<ul class="elenco-stanze catalogo-giochi">
+    {% for gioco in giochi %}
+    {% set descrizione %}
+        <span class="gioco-descrizione">
+            <img class="icona-gioco" src="{{ url_for('static', filename='icone/' + icone.get(gioco.nome, 'gioco.svg')) }}"
+                 alt="" width="64" height="64">
+            <span class="gioco-testo">
+                <strong>{{ gioco.nome }}</strong>
+                <span>Massimo {{ gioco.max_giocatori }} giocatori</span>
+                {% if gioco.selezionato %}<span class="gioco-selezionato">Selezionato</span>{% endif %}
+            </span>
+        </span>
+    {% endset %}
+    <li>
+        {% if utente.is_admin %}
+        <form method="post" action="{{ url_for('seleziona_gioco') }}">
+            <button class="riga-stanza scheda-gioco" type="submit" name="gioco_id" value="{{ gioco.id }}"
+                    aria-label="Scegli {{ gioco.nome }}" aria-pressed="{{ 'true' if gioco.selezionato else 'false' }}">
+                {{ descrizione }}
+            </button>
+        </form>
+        {% else %}
+        <div class="riga-stanza scheda-gioco {% if gioco.selezionato %}scheda-selezionata{% endif %}">{{ descrizione }}</div>
+        {% endif %}
+    </li>
+    {% else %}
+    <li>Nessun gioco disponibile per il numero attuale di partecipanti.</li>
+    {% endfor %}
+</ul>

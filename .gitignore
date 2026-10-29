@@ -1,0 +1,40 @@
+# File locali e credenziali
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# C++ e build locali
+build/
+cmake-build-*/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+
+# C#
+bin/
+obj/
+.vs/
+*.user
+
+# Risultati dei test
+coverage/
+TestResults/
+
+# Database SQLite e chiave di sessione locali
+python/instance/
+
+# Documentazione e test personali: solo locali, a qualsiasi profondità
+docs/
+tests/

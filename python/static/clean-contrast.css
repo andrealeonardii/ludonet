@@ -1,0 +1,252 @@
+/* Tema definitivo Ludonet: Clean Contrast. */
+
+:root {
+    --blue: #315ed6;
+    --blue-dark: #203f99;
+    --blue-soft: #eaf0ff;
+    --pink: #e96f96;
+    --pink-soft: #fff0f5;
+    --peach: #f7a27f;
+    --peach-soft: #fff0e9;
+    --green: #4dbb88;
+    --green-soft: #e8f7f1;
+    --ink: #24304a;
+    --muted: #68738c;
+    --line: #dfe5f0;
+    --surface: #ffffff;
+    --background: #f3f6fb;
+    --shadow: 0 10px 26px rgba(36, 48, 74, .09);
+    --radius: 12px;
+}
+
+body {
+    background:
+        linear-gradient(90deg, #eaf0ff 0 18%, transparent 18% 82%, #e8f7f1 82% 100%),
+        var(--background);
+    background-attachment: fixed;
+}
+
+.card,
+.intestazione-stanza {
+    border: 0;
+    border-top: 5px solid var(--blue);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.layout-accesso .sezione-profilo:nth-of-type(1) {
+    border-top-color: var(--blue);
+}
+
+.layout-accesso .sezione-profilo:nth-of-type(2) {
+    border-top-color: var(--pink);
+}
+
+.layout-accesso #accesso {
+    border-top-color: var(--peach);
+}
+
+.layout-accesso .stanze-disponibili {
+    border-top-color: var(--green);
+}
+
+h1,
+h2,
+h3,
+h4 {
+    color: var(--ink);
+}
+
+.layout-accesso .sezione-profilo:nth-of-type(1) h2 {
+    color: var(--blue-dark);
+}
+
+.layout-accesso .sezione-profilo:nth-of-type(2) h2 {
+    color: #a94366;
+}
+
+.layout-accesso #accesso h2 {
+    color: #a54f30;
+}
+
+.layout-accesso .stanze-disponibili h2 {
+    color: #267653;
+}
+
+button,
+input,
+.riga-stanza,
+.partecipante,
+.scheda-gioco {
+    border-radius: 8px;
+}
+
+.btn-primary,
+.layout-accesso button:not([hidden]) {
+    border-color: var(--blue);
+    background: var(--blue);
+    color: #fff;
+    box-shadow: none;
+}
+
+.btn-secondary {
+    border-color: #cdd7ec;
+    background: var(--blue-soft);
+    color: var(--blue-dark);
+}
+
+button:hover:not(:disabled) {
+    filter: none;
+    background-color: var(--blue-dark);
+    color: #fff;
+    box-shadow: 0 5px 13px rgba(49, 94, 214, .16);
+}
+
+input {
+    border: 1px solid #cfd7e6;
+    background: #f9fbff;
+}
+
+input:focus {
+    border-color: var(--blue);
+    background: #fff;
+}
+
+.riga-stanza,
+.partecipante {
+    border-color: var(--line);
+    background: #f9fbff;
+}
+
+#stanze .riga-stanza {
+    border-left: 4px solid var(--green);
+}
+
+.partecipante-admin {
+    border-color: #adc0f2;
+    border-left: 4px solid var(--blue);
+    background: var(--blue-soft);
+}
+
+.ruolo-admin {
+    background: var(--blue);
+}
+
+.catalogo-giochi li:nth-child(4n + 1) .scheda-gioco {
+    border-left: 4px solid var(--blue);
+}
+
+.catalogo-giochi li:nth-child(4n + 2) .scheda-gioco {
+    border-left: 4px solid var(--pink);
+}
+
+.catalogo-giochi li:nth-child(4n + 3) .scheda-gioco {
+    border-left: 4px solid var(--peach);
+}
+
+.catalogo-giochi li:nth-child(4n + 4) .scheda-gioco {
+    border-left: 4px solid var(--green);
+}
+
+.scheda-gioco[aria-pressed="true"],
+.scheda-selezionata {
+    border-color: var(--blue);
+    background: var(--blue-soft);
+    box-shadow: inset 0 0 0 1px var(--blue);
+}
+
+.codice-stanza {
+    background: var(--blue-soft);
+}
+
+.monete,
+.premio-monete {
+    border: 1px solid #f3c4b1;
+    background: var(--peach-soft);
+    color: #934d34;
+}
+
+.errore {
+    border-color: #efb6c8;
+    background: var(--pink-soft);
+    color: #9d3d5c;
+}
+
+.tabellone-forza4 {
+    background: var(--blue);
+    box-shadow: 0 10px 22px rgba(49, 94, 214, .18);
+}
+
+.pedina-1 {
+    background: var(--pink);
+}
+
+.pedina-2 {
+    background: #ffd166;
+}
+
+.risposte-quiz button:nth-child(4n + 1) {
+    border-left: 4px solid var(--blue);
+}
+
+.risposte-quiz button:nth-child(4n + 2) {
+    border-left: 4px solid var(--pink);
+}
+
+.risposte-quiz button:nth-child(4n + 3) {
+    border-left: 4px solid var(--peach);
+}
+
+.risposte-quiz button:nth-child(4n + 4) {
+    border-left: 4px solid var(--green);
+}
+
+.soluzione-quiz,
+.indizi-justone li {
+    background: var(--green-soft);
+    color: #267653;
+}
+
+.lettera-nomi,
+.parola-justone {
+    background: var(--peach-soft);
+    color: #984d32;
+}
+
+.risultati-nomi li,
+.classifica-quiz .riga-stanza,
+.classifica-nomi .riga-stanza {
+    border-left: 4px solid var(--green);
+}
+
+.voto-contrario input:checked + span {
+    border-color: var(--pink);
+    background: var(--pink-soft);
+}
+
+#editor-avatar {
+    border: 0;
+    border-top: 5px solid var(--pink);
+    border-radius: var(--radius);
+}
+
+.frecce-avatar button {
+    border-color: #cdd7ec;
+    background: var(--blue-soft);
+    color: var(--blue-dark);
+}
+
+.frecce-avatar .lucchetto-avatar {
+    border-color: #f3c4b1;
+    background: var(--peach-soft);
+    color: #934d34;
+}
+
+@media (max-width: 700px) {
+    body {
+        background:
+            linear-gradient(180deg, #eaf0ff 0 120px, transparent 120px),
+            var(--background);
+    }
+}
