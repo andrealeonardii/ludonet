@@ -10,16 +10,20 @@
     {% endif %}
 {% elif gioco_corrente %}
     {% set avvii = {'Forza 4': 'azione_forza4', 'Quiz': 'azione_quiz', 'Nomi, cose, città': 'azione_nomi', 'Just One': 'azione_justone'} %}
-    <section class="card pannello-giochi anteprima-gioco">
-        <h2>{{ gioco_corrente.nome }}</h2>
+    <section class="avvio-gioco" aria-label="Avvio {{ gioco_corrente.nome }}">
         {% if utente.is_admin and gioco_corrente.nome in avvii %}
-        <form method="post" action="{{ url_for(avvii[gioco_corrente.nome], azione='avvia') }}">
-            <button class="btn-primary" {% if numero_partecipanti < minimo_giocatori %}disabled{% endif %}>Avvia {{ gioco_corrente.nome }}</button>
+        {% set forza4_con_bot = gioco_corrente.nome == 'Forza 4' and numero_partecipanti == 1 %}
+        {% set azione_avvio = 'avvia_bot' if forza4_con_bot else 'avvia' %}
+        <form method="post" action="{{ url_for(avvii[gioco_corrente.nome], azione=azione_avvio) }}">
+            <button class="btn-primary"
+                    {% if numero_partecipanti < minimo_giocatori and not forza4_con_bot %}disabled{% endif %}>
+                {{ 'Avvia Forza 4 con bot AI' if forza4_con_bot else 'Avvia ' ~ gioco_corrente.nome }}
+            </button>
         </form>
         {% else %}
         <p>In attesa che l’admin avvii la partita.</p>
         {% endif %}
-        {% if numero_partecipanti < minimo_giocatori %}
+        {% if numero_partecipanti < minimo_giocatori and not forza4_con_bot %}
         <p>Servono almeno {{ minimo_giocatori }} giocatori.</p>
         {% endif %}
     </section>

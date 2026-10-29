@@ -254,6 +254,11 @@ def azione_forza4(azione):
     try:
         if azione == 'avvia':
             codice = forza4.avvia(utente['username'], utente['accesso_id'])
+        elif azione == 'avvia_bot':
+            # Quando l'admin è solo, aggiunge NickBot e avvia la partita
+            # con un'unica azione dal pannello di avvio.
+            bot.gestisci(utente['username'], utente['accesso_id'], 'aggiungi')
+            codice = forza4.avvia(utente['username'], utente['accesso_id'])
         elif azione in ('stanza', 'riprendi'):
             codice = forza4.cambia_vista(utente['username'], utente['accesso_id'], azione == 'stanza')
         elif azione == 'muovi':

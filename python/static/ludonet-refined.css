@@ -290,47 +290,57 @@ main {
 .intestazione-stanza {
     position: relative;
     top: auto;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    grid-template-areas:
-        "brand greeting avatar"
-        "code coins avatar";
-    align-items: center;
-    gap: 8px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     margin-bottom: 18px;
-    padding: 14px 18px;
+    padding: 16px 20px 20px;
 }
 
 .intestazione-stanza .marchio {
-    grid-area: brand;
+    align-self: center;
+    justify-content: center;
     margin: 0;
-    font-size: 1.35rem;
+    font-size: 1.75rem;
 }
 
 .intestazione-stanza .logo {
-    width: 42px;
-    height: 42px;
+    width: 64px;
+    height: 64px;
 }
 
 #saluto-stanza {
-    grid-area: greeting;
+    align-self: center;
     margin: 0;
+    text-align: center;
+}
+
+.comandi-intestazione {
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(170px, 1fr) minmax(120px, .7fr) minmax(190px, 1fr);
+    align-items: center;
+    gap: 18px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
 }
 
 .intestazione-stanza .codice-stanza {
-    grid-area: code;
+    justify-self: start;
     margin: 0;
 }
 
-.intestazione-stanza .monete {
-    grid-area: coins;
-    width: fit-content;
-    margin: 0;
+.avatar-intestazione {
+    display: grid;
+    justify-items: center;
+    gap: 5px;
+    color: var(--muted);
+    font-size: .78rem;
+    font-weight: 700;
 }
 
 .pulsante-avatar {
     position: static;
-    grid-area: avatar;
     width: 58px;
     height: 76px;
 }
@@ -340,14 +350,33 @@ main {
     height: 68px;
 }
 
+.intestazione-stanza .logout-stanza {
+    justify-self: end;
+    margin: 0;
+}
+
+.intestazione-stanza .logout-stanza button {
+    min-width: 190px;
+}
+
+.intestazione-stanza .monete {
+    align-self: center;
+    width: fit-content;
+    margin: 0;
+}
+
 #sala {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
+    gap: 18px;
+    align-items: stretch;
 }
 
 #sala > .card {
     width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding: 20px;
 }
 
 #partecipanti {
@@ -393,7 +422,29 @@ main {
 /* Partite: pannello contenuto e visibile senza scroll eccessivo. */
 #partita {
     width: min(700px, 100%);
-    margin: 0 auto;
+    margin: 18px auto 0;
+}
+
+.avvio-gioco {
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    padding: 2px 16px 8px;
+    text-align: center;
+}
+
+.avvio-gioco h2,
+.avvio-gioco p {
+    margin-bottom: 0;
+}
+
+.avvio-gioco form {
+    display: flex;
+    justify-content: center;
+}
+
+.avvio-gioco button {
+    min-width: 220px;
 }
 
 #partita > .card,
@@ -518,6 +569,35 @@ main {
     .pulsante-avatar-home .avatar-mini {
         width: 62px;
         height: 114px;
+    }
+
+    .comandi-intestazione {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .intestazione-stanza .codice-stanza,
+    .intestazione-stanza .logout-stanza {
+        justify-self: center;
+    }
+
+    .intestazione-stanza .logout-stanza button {
+        width: 100%;
+        min-width: 0;
+    }
+
+    #sala {
+        grid-template-columns: 1fr;
+    }
+
+    #sala > .card {
+        height: auto;
+        padding: 17px;
+    }
+
+    .avvio-gioco button {
+        width: 100%;
+        min-width: 0;
     }
 
     .stanze-disponibili {

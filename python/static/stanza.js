@@ -12,8 +12,8 @@ function aggiornaVista() {
     const vistaGioco = partita && dati.dataset.inSala === "0";
     document.getElementById("sala").hidden = vistaGioco;
     document.getElementById("saluto-stanza").hidden = vistaGioco;
-    document.getElementById("codice-stanza").hidden = vistaGioco;
-    document.getElementById("logout-stanza").hidden = vistaGioco;
+    const comandiIntestazione = document.querySelector(".comandi-intestazione");
+    if (comandiIntestazione) comandiIntestazione.hidden = vistaGioco;
     const torna = document.getElementById("torna-stanza");
     const riprendi = document.getElementById("rientra-partita");
     if (torna) torna.hidden = !vistaGioco;

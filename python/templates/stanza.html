@@ -6,32 +6,43 @@
     <title>Ludonet — Stanza</title>
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='icone/ludonet-minimal.svg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='ludonet.css', v=2) }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='ludonet-refined.css', v=2) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='ludonet-refined.css', v=17) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='clean-contrast.css', v=1) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='avatar-posizioni.css', v=2) }}">
 </head>
 <body>
     {% set vista_gioco = partita and not partita.in_sala %}
     <main class="layout-stanza">
-        <header class="intestazione-stanza">
-            <div id="codice-stanza" class="codice-stanza" {% if vista_gioco %}hidden{% endif %}>
-                <span>Codice stanza</span>
-                <strong>{{ utente['stanza_codice'] }}</strong>
-            </div>
-            <button id="apri-avatar" class="pulsante-avatar" type="button" aria-label="Personalizza personaggio" aria-haspopup="dialog">
-                <span class="avatar-figura avatar-mini">
-                    {% for parte, nome in avatar_scelto.items() %}
-                    <img data-mini="{{ parte }}" src="{{ url_for('static', filename='avatar/' ~ parte ~ '/' ~ nome ~ '.png', v=2) }}" alt="">
-                    {% endfor %}
-                </span>
-            </button>
+                <header class="intestazione-stanza">
             <h1 class="marchio">
                 <img class="logo" src="{{ url_for('static', filename='icone/ludonet-minimal.svg') }}" alt="Logo Ludonet" width="80" height="80">
                 <span>LUDONET</span>
             </h1>
             <p id="saluto-stanza" {% if vista_gioco %}hidden{% endif %}>Ciao {{ utente['username'] }}! Sei nella stanza.</p>
-            <p class="monete" {% if utente.is_ospite %}hidden{% endif %}><img class="icona-ludocoin" src="{{ url_for('static', filename='icone/ludocoin.svg') }}" alt="" width="28" height="28"> Ludocoin: <strong id="saldo-monete" data-url="{{ url_for('saldo_economia') }}">{{ saldo_monete }}</strong>
-            </p>
+            <div class="comandi-intestazione" {% if vista_gioco %}hidden{% endif %}>
+                <div id="codice-stanza" class="codice-stanza">
+                    <span>Codice stanza</span>
+                    <strong>{{ utente['stanza_codice'] }}</strong>
+                </div>
+                <div class="avatar-intestazione">
+                    <span>Il mio avatar</span>
+                    <button id="apri-avatar" class="pulsante-avatar" type="button" aria-label="Personalizza personaggio" aria-haspopup="dialog">
+                        <span class="avatar-figura avatar-mini">
+                            {% for parte, nome in avatar_scelto.items() %}
+                            <img data-mini="{{ parte }}" src="{{ url_for('static', filename='avatar/' ~ parte ~ '/' ~ nome ~ '.png', v=2) }}" alt="">
+                            {% endfor %}
+                        </span>
+                    </button>
+                </div>
+                <form id="logout-stanza" class="logout-stanza" method="post" action="{{ url_for('logout') }}">
+                    {% if utente['is_admin'] %}
+                    <button type="submit" class="btn-secondary">Esci e chiudi stanza</button>
+                    {% else %}
+                    <button type="submit" class="btn-secondary">Esci dalla stanza</button>
+                    {% endif %}
+                </form>
+            </div>
+            <p class="monete" {% if utente.is_ospite %}hidden{% endif %}><img class="icona-ludocoin" src="{{ url_for('static', filename='icone/ludocoin.svg') }}" alt="" width="28" height="28"> Ludocoin: <strong id="saldo-monete" data-url="{{ url_for('saldo_economia') }}">{{ saldo_monete }}</strong></p>
         </header>
         {% for messaggio in get_flashed_messages() %}
         <p class="errore" role="alert">{{ messaggio }}</p>
@@ -50,11 +61,7 @@
                 {% endfor %}
             </ul>
             {% if utente.is_admin %}
-            <div id="comandi-bot">
-                <form method="post" action="{{ url_for('gestisci_bot', azione='aggiungi') }}"
-                      data-bot-aggiungi {% if partecipanti|length != 1 %}hidden{% endif %}>
-                    <button class="btn-secondary">Aggiungi giocatore AI · Forza 4</button>
-                </form>
+                        <div id="comandi-bot">
                 <form method="post" action="{{ url_for('gestisci_bot', azione='rimuovi') }}"
                       data-bot-rimuovi {% if not partecipanti|selectattr('is_bot')|list %}hidden{% endif %}>
                     <button class="btn-secondary">Rimuovi giocatore AI</button>
@@ -84,18 +91,11 @@
         <div id="partita" data-url="{{ url_for('pannello_partita') }}"
              {% if partita and not vista_gioco %}hidden{% endif %}>
             {% include 'partita.html' %}
-        </div>
-            <form id="logout-stanza" class="logout-stanza" {% if vista_gioco %}hidden{% endif %} method="post" action="{{ url_for('logout') }}">
-                {% if utente['is_admin'] %}
-                <button type="submit" class="btn-secondary">Esci e chiudi stanza</button>
-                {% else %}
-                <button type="submit" class="btn-secondary">Esci dalla stanza</button>
-                {% endif %}
-            </form>
+                </div>
     </main>
     {% include 'avatar.html' %}
     <script src="{{ url_for('static', filename='avatar-ludonet.js') }}" defer></script>
     <script src="{{ url_for('static', filename='nomi.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='stanza.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='stanza.js', v=3) }}" defer></script>
 </body>
 </html>
