@@ -148,7 +148,7 @@ main {
 .layout-accesso .stanze-disponibili { grid-column: 2; grid-row: 2; }
 
 /* Tutte le azioni della home condividono lo stesso stile blu. */
-.layout-accesso button:not([hidden]) {
+.layout-accesso button:not([hidden]):not(.pulsante-avatar-home) {
     border-color: var(--blue);
     background: var(--blue);
     color: #fff;
@@ -188,24 +188,39 @@ main {
 }
 
 /* Dopo il login mostra profilo e stanze affiancati, senza box vuoto. */
+.layout-profilo {
+    --altezza-riquadro-profilo: 440px;
+}
+
+.layout-profilo .sezione-profilo,
+.layout-profilo .stanze-disponibili {
+    height: var(--altezza-riquadro-profilo);
+    min-height: 0;
+    max-height: var(--altezza-riquadro-profilo);
+}
+
 .layout-profilo .sezione-profilo {
     display: flex;
     grid-column: 1;
     grid-row: 1;
-    height: 100%;
     flex-direction: column;
 }
 
 .profilo-contenuti {
     display: grid;
+    min-height: 0;
+    flex: 1 1 0;
     grid-template-columns: minmax(0, 1fr) 130px;
+    grid-template-rows: minmax(0, 1fr);
     gap: 18px;
     align-items: start;
 }
 
-/* Mantiene stabile il box quando il codice personale viene nascosto. */
+/* Il codice si apre nello spazio riservato, senza ridimensionare i pannelli. */
 .layout-profilo .codice-personale {
-    min-height: 150px;
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
 }
 
 .codice-personale .testo-nascondi-codice {
@@ -229,26 +244,32 @@ main {
     font-size: .9rem;
 }
 
-.pulsante-avatar-home {
+.layout-profilo .pulsante-avatar-home {
     position: relative;
     inset: auto;
-    width: 92px;
-    height: 150px;
     margin: 0 auto;
-    padding: 5px;
-    border: 1px solid #cdd7ec;
-    background: var(--green-soft);
+    width: 128px;
+    height: 176px;
+    padding: 6px;
 }
 
 .pulsante-avatar-home .avatar-mini {
-    width: 70px;
-    height: 128px;
+    width: 88px;
+    height: 160px;
+}
+
+.layout-profilo .sezione-profilo > .monete {
+    align-self: flex-start;
+    width: fit-content;
+    max-width: 100%;
+    flex-wrap: wrap;
 }
 
 .layout-profilo .sezione-profilo > form {
     display: flex;
     justify-content: center;
     margin-top: auto;
+    padding-top: 20px;
 }
 
 .layout-profilo .sezione-profilo > form button {
@@ -258,7 +279,10 @@ main {
 .layout-profilo .stanze-disponibili {
     grid-column: 2;
     grid-row: 1;
-    height: 100%;
+}
+
+.layout-profilo #stanze {
+    max-height: none;
 }
 
 .layout-profilo .form-accesso-tecnico {
@@ -351,6 +375,7 @@ main {
 }
 
 .intestazione-stanza .logout-stanza {
+    grid-column: auto;
     justify-self: end;
     margin: 0;
 }
@@ -512,10 +537,70 @@ main {
     overflow-y: auto;
 }
 
-/* Il dialog dell'avatar rimane ampio, ma non supera la finestra. */
+/* L'editor si adatta allo schermo e mantiene le azioni sempre visibili. */
 #editor-avatar {
-    width: min(620px, calc(100% - 28px));
-    max-height: 90vh;
+    width: min(560px, calc(100% - 24px));
+    max-height: calc(100dvh - 24px);
+    padding: 18px;
+    overflow: hidden;
+}
+
+#editor-avatar[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+#form-avatar {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#form-avatar > h2 {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.contenuto-editor-avatar {
+    min-height: 0;
+    overflow-y: auto;
+}
+
+#editor-avatar .monete {
+    width: fit-content;
+    margin: 10px 0 12px;
+}
+
+#editor-avatar .compositore-avatar {
+    --altezza-compositore: clamp(160px, calc(100dvh - 320px), 360px);
+    width: min(380px, 100%);
+    height: var(--altezza-compositore);
+}
+
+#editor-avatar .avatar-anteprima {
+    top: 4px;
+    width: auto;
+    height: calc(100% - 8px);
+    aspect-ratio: 6 / 11;
+}
+
+#editor-avatar .frecce-testa { top: 15%; }
+#editor-avatar .frecce-corpo { top: 45%; }
+#editor-avatar .frecce-piedi { top: 76%; }
+
+#errore-avatar:empty {
+    display: none;
+}
+
+#editor-avatar .azioni-avatar {
+    flex-shrink: 0;
+}
+
+@media (max-width: 380px) {
+    #editor-avatar .compositore-avatar {
+        --altezza-compositore: clamp(160px, calc(100dvh - 320px), 280px);
+    }
 }
 
 /* Tablet e telefono: una sola colonna, senza elementi sovradimensionati. */
@@ -554,21 +639,10 @@ main {
     .layout-profilo .stanze-disponibili {
         grid-column: 1;
         grid-row: auto;
-        height: auto;
     }
 
     .profilo-contenuti {
-        grid-template-columns: minmax(0, 1fr) 110px;
-    }
-
-    .pulsante-avatar-home {
-        width: 82px;
-        height: 136px;
-    }
-
-    .pulsante-avatar-home .avatar-mini {
-        width: 62px;
-        height: 114px;
+        grid-template-columns: minmax(0, 1fr) 130px;
     }
 
     .comandi-intestazione {

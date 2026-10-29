@@ -6,8 +6,8 @@
     <title>Ludonet — Stanza</title>
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='icone/ludonet-minimal.svg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='ludonet.css', v=2) }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='ludonet-refined.css', v=17) }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='clean-contrast.css', v=1) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='ludonet-refined.css', v=18) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='clean-contrast.css', v=3) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='avatar-posizioni.css', v=2) }}">
 </head>
 <body>
@@ -94,7 +94,7 @@
                 </div>
     </main>
     {% include 'avatar.html' %}
-    <script src="{{ url_for('static', filename='avatar-ludonet.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='avatar-ludonet.js', v=3) }}" defer></script>
     <script src="{{ url_for('static', filename='nomi.js') }}" defer></script>
     <script src="{{ url_for('static', filename='stanza.js', v=3) }}" defer></script>
 </body>

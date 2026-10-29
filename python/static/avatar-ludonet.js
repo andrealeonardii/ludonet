@@ -56,7 +56,6 @@
             bloccato ||= !articolo.posseduto;
         }
 
-        document.getElementById("aiuto-avatar").hidden = !bloccato;
         document.getElementById("salva-avatar").disabled = bloccato;
     }
 

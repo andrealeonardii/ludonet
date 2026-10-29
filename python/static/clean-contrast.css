@@ -83,7 +83,7 @@ input,
 }
 
 .btn-primary,
-.layout-accesso button:not([hidden]) {
+.layout-accesso button:not([hidden]):not(.pulsante-avatar-home) {
     border-color: var(--blue);
     background: var(--blue);
     color: #fff;

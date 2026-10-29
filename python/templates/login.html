@@ -6,8 +6,8 @@
     <title>Ludonet — Accesso</title>
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='icone/ludonet-minimal.svg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='ludonet.css', v=2) }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='ludonet-refined.css', v=14) }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='clean-contrast.css', v=2) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='ludonet-refined.css', v=18) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='clean-contrast.css', v=3) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='avatar-posizioni.css', v=2) }}">
 </head>
 <body>
@@ -124,7 +124,7 @@
     </main>
     {% if profilo %}
     {% include 'avatar.html' %}
-    <script src="{{ url_for('static', filename='avatar-ludonet.js', v=2) }}" defer></script>
+    <script src="{{ url_for('static', filename='avatar-ludonet.js', v=3) }}" defer></script>
     {% endif %}
     <script src="{{ url_for('static', filename='profilo-home.js', v=1) }}" defer></script>
     <script src="{{ url_for('static', filename='stanze.js') }}" defer></script>
