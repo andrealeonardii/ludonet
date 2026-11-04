@@ -1,8 +1,8 @@
 <dialog id="editor-avatar" aria-labelledby="titolo-avatar">
     <form id="form-avatar" action="{{ url_for('salva_avatar') }}" method="post">
         <h2 id="titolo-avatar">Il tuo personaggio</h2>
-        <div class="contenuto-editor-avatar">
-            {% include 'codice_personale.html' %}
+
+                <div class="contenuto-editor-avatar">
             {% set avatar_ospite = utente.is_ospite if utente is defined else false %}
             {% if avatar_ospite %}<p>Personaggio temporaneo. Per Ludocoin e acquisti serve un profilo.</p>{% endif %}
             <p class="monete" {% if avatar_ospite %}hidden{% endif %}><img class="icona-ludocoin" src="{{ url_for('static', filename='icone/ludocoin.svg') }}" alt="" width="28" height="28"> Ludocoin: <strong id="saldo-avatar">{{ saldo_monete }}</strong></p>
