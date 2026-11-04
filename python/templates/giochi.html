@@ -7,6 +7,7 @@
 {% set icone = {'Forza 4': 'forza4.png', 'Quiz': 'quiz.png', 'Nomi, cose, città': 'nomi.png', 'Just One': 'justone.png'} %}
 <ul class="elenco-stanze catalogo-giochi">
     {% for gioco in giochi %}
+    {% set riprendi_partita = utente.is_admin and partita and partita.in_sala and gioco.selezionato %}
     {% set descrizione %}
         <span class="gioco-descrizione">
             <img class="icona-gioco" src="{{ url_for('static', filename='icone/' + icone.get(gioco.nome, 'gioco.svg')) }}"
@@ -14,7 +15,7 @@
             <span class="gioco-testo">
                 <strong>{{ gioco.nome }}</strong>
                 <span>Massimo {{ gioco.max_giocatori }} giocatori</span>
-                <span class="gioco-selezionato"{% if not gioco.selezionato %} aria-hidden="true"{% endif %}>Selezionato</span>
+                <span class="gioco-selezionato"{% if not gioco.selezionato %} aria-hidden="true"{% endif %}>{{ 'Riprendi partita' if riprendi_partita else 'Selezionato' }}</span>
             </span>
         </span>
     {% endset %}
@@ -22,7 +23,7 @@
         {% if utente.is_admin %}
         <form method="post" action="{{ url_for('seleziona_gioco') }}">
             <button class="riga-stanza scheda-gioco" type="submit" name="gioco_id" value="{{ gioco.id }}"
-                    aria-label="Scegli {{ gioco.nome }}" aria-pressed="{{ 'true' if gioco.selezionato else 'false' }}">
+                    aria-label="{{ 'Riprendi ' ~ gioco.nome if riprendi_partita else 'Scegli ' ~ gioco.nome }}" aria-pressed="{{ 'true' if gioco.selezionato else 'false' }}">
                 {{ descrizione }}
             </button>
         </form>

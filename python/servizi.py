@@ -97,6 +97,28 @@ class ErroreGioco(ValueError):
     """Scelta del gioco non consentita."""
 
 
+def rimuovi_partecipante(username, accesso_id, destinatario):
+    """Rimuove una partecipazione su richiesta dell'admin, conservando il profilo."""
+    with transazione():
+        admin = repository.trova_utente(username)
+        if admin is None or admin['accesso_id'] != accesso_id or not admin['is_admin']:
+            raise ErroreGioco("Solo l'admin può rimuovere i partecipanti.")
+        utente = repository.trova_utente(destinatario)
+        codice = admin['stanza_codice']
+        if utente is None or utente['stanza_codice'] != codice:
+            raise ErroreGioco('Il partecipante non è più nella stanza.')
+        if utente['is_admin'] or utente['is_bot']:
+            raise ErroreGioco('Scegli un altro partecipante da rimuovere.')
+        # La rotazione di Just One richiede che il gruppo resti invariato.
+        repository_justone.elimina(codice)
+        repository.elimina_utente(destinatario)
+        # La FK cancella automaticamente un duello Forza 4 rimasto senza avversario.
+        if repository.conta_partecipanti(codice) < 2:
+            repository_quiz.elimina(codice)
+            repository_nomi.elimina(codice)
+    return codice
+
+
 def prepara_gioco(username, accesso_id, nome):
     """Seleziona il gioco nella stessa transazione che ne avvia la partita."""
     utente = repository.trova_utente(username)

@@ -126,6 +126,10 @@ def stato_gioco(utente):
         partita['id'], gioco['nome'], utente['username']
     ) if partita and gioco else None
     stato['gioco_corrente'] = gioco
+    stato['giocatori_partita'] = (
+        avatar.giocatori_forza4(utente, partita) if stato.get('forza4_selezionato')
+        else avatar.giocatori_multigioco(utente)
+    ) if partita else []
     stato['minimo_giocatori'] = 3 if gioco is not None and gioco['nome'] == 'Just One' else 2
     return stato
 
@@ -141,7 +145,15 @@ def seleziona_gioco():
     if gioco_id is None or not 1 <= gioco_id <= 2147483647:
         flask.abort(400)
     try:
-        codice = servizi.scegli_gioco(utente['username'], utente['accesso_id'], gioco_id)
+        selezionato = repository.gioco_selezionato(utente['stanza_codice'])
+        partita_sospesa = stato_gioco(utente).get('partita') if selezionato and selezionato['id'] == gioco_id else None
+        if partita_sospesa and partita_sospesa['in_sala']:
+            servizio = {'Forza 4': forza4, 'Quiz': quiz, 'Nomi, cose, città': nomi, 'Just One': justone}[selezionato['nome']]
+            codice = servizio.cambia_vista(utente['username'], utente['accesso_id'], False)
+            if servizio is forza4:
+                bot.programma(codice)
+        else:
+            codice = servizi.scegli_gioco(utente['username'], utente['accesso_id'], gioco_id)
     except servizi.ErroreGioco as errore:
         flask.flash(str(errore))
     else:
@@ -163,6 +175,24 @@ def stanza():
         giochi=repository.giochi_disponibili(utente['stanza_codice']),
         **stato_gioco(utente)
     )
+
+
+@app.post('/stanza/rimuovi')
+def rimuovi_partecipante():
+    utente = utente_corrente()
+    if utente is None:
+        return flask.redirect(flask.url_for('login'))
+    if not utente['is_admin']:
+        flask.abort(403)
+    try:
+        codice = servizi.rimuovi_partecipante(
+            utente['username'], utente['accesso_id'], flask.request.form.get('username', '')
+        )
+    except servizi.ErroreGioco as errore:
+        flask.flash(str(errore))
+    else:
+        sincronizzazione.notifica_stanza(codice)
+    return flask.redirect(flask.url_for('stanza'))
 
 
 @app.context_processor
@@ -248,8 +278,11 @@ def pannello_partita():
 
 @app.post('/forza4/<azione>')
 def azione_forza4(azione):
+    richiesta_ajax = azione == 'muovi' and flask.request.accept_mimetypes.best == 'application/json'
     utente = utente_corrente()
     if utente is None:
+        if richiesta_ajax:
+            return flask.jsonify(errore='Accesso richiesto.'), 401
         return flask.redirect(flask.url_for('login'))
     try:
         if azione == 'avvia':
@@ -271,10 +304,14 @@ def azione_forza4(azione):
         else:
             flask.abort(404)
     except servizi.ErroreGioco as errore:
+        if richiesta_ajax:
+            return flask.jsonify(errore=str(errore)), 409
         flask.flash(str(errore))
     else:
         bot.programma(codice)
         sincronizzazione.notifica_stanza(codice)
+        if richiesta_ajax:
+            return flask.jsonify(ok=True)
     return flask.redirect(flask.url_for('stanza') + '#partita')
 
 
@@ -323,8 +360,11 @@ def cambia_vista(azione):
 
 @app.post('/quiz/<azione>')
 def azione_quiz(azione):
+    richiesta_ajax = flask.request.accept_mimetypes.best == 'application/json'
     utente = utente_corrente()
     if utente is None:
+        if richiesta_ajax:
+            return flask.jsonify(errore='Accesso richiesto.'), 401
         return flask.redirect(flask.url_for('login'))
     username, accesso_id = utente['username'], utente['accesso_id']
     partita_id = flask.request.form.get('partita_id')
@@ -340,9 +380,13 @@ def azione_quiz(azione):
         else:
             flask.abort(404)
     except servizi.ErroreGioco as errore:
+        if richiesta_ajax:
+            return flask.jsonify(errore=str(errore)), 409
         flask.flash(str(errore))
     else:
         sincronizzazione.notifica_stanza(codice)
+        if richiesta_ajax:
+            return flask.jsonify(ok=True)
     return flask.redirect(flask.url_for('stanza') + '#partita')
 
 
@@ -370,8 +414,11 @@ def scadenza_nomi():
 
 @app.post('/nomi/<azione>')
 def azione_nomi(azione):
+    richiesta_ajax = flask.request.accept_mimetypes.best == 'application/json'
     utente = utente_corrente()
     if utente is None:
+        if richiesta_ajax:
+            return flask.jsonify(errore='Accesso richiesto.'), 401
         return flask.redirect(flask.url_for('login'))
     username, accesso_id = utente['username'], utente['accesso_id']
     partita_id = flask.request.form.get('partita_id')
@@ -388,16 +435,23 @@ def azione_nomi(azione):
         else:
             flask.abort(404)
     except servizi.ErroreGioco as errore:
+        if richiesta_ajax:
+            return flask.jsonify(errore=str(errore)), 409
         flask.flash(str(errore))
     else:
         sincronizzazione.notifica_stanza(codice)
+        if richiesta_ajax:
+            return flask.jsonify(ok=True)
     return flask.redirect(flask.url_for('stanza') + '#partita')
 
 
 @app.post('/justone/<azione>')
 def azione_justone(azione):
+    richiesta_ajax = flask.request.accept_mimetypes.best == 'application/json'
     utente = utente_corrente()
     if utente is None:
+        if richiesta_ajax:
+            return flask.jsonify(errore='Accesso richiesto.'), 401
         return flask.redirect(flask.url_for('login'))
     username, accesso_id = utente['username'], utente['accesso_id']
     partita_id = flask.request.form.get('partita_id')
@@ -415,9 +469,13 @@ def azione_justone(azione):
         else:
             flask.abort(404)
     except servizi.ErroreGioco as errore:
+        if richiesta_ajax:
+            return flask.jsonify(errore=str(errore)), 409
         flask.flash(str(errore))
     else:
         sincronizzazione.notifica_stanza(codice)
+        if richiesta_ajax:
+            return flask.jsonify(ok=True)
     return flask.redirect(flask.url_for('stanza') + '#partita')
 
 

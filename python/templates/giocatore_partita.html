@@ -1,0 +1,9 @@
+<span class="avatar-figura avatar-partita" role="img" aria-label="{{ 'Avatar robot del bot AI' if giocatore.is_bot else 'Avatar di ' ~ giocatore.nome }}">
+    {% for parte, nome in giocatore.avatar.items() %}
+    <img src="{{ url_for('static', filename='avatar/' ~ parte ~ '/' ~ nome ~ '.png', v=2) }}" alt="">
+    {% endfor %}
+</span>
+<p class="nome-giocatore-partita" title="{{ giocatore.username }}">
+    {% if giocatore.colore %}<span class="colore-giocatore colore-{{ giocatore.colore }}" aria-label="{{ 'Pedine rosse' if giocatore.colore == 1 else 'Pedine gialle' }}"></span>{% endif %}
+    <strong>{{ giocatore.nome }}</strong>
+</p>

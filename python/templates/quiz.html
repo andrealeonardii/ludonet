@@ -1,7 +1,10 @@
-<section class="card pannello-giochi" aria-labelledby="titolo-quiz"
+<section class="card pannello-giochi partita-multigioco" data-gioco="quiz" data-nome-gioco="Quiz" data-saldo-monete="{{ saldo_monete }}" aria-labelledby="titolo-quiz"
          data-in-sala="{{ 1 if partita and partita.in_sala else 0 }}"
          data-partita-id="{{ partita.id if partita else '' }}">
     <h2 id="titolo-quiz">Quiz</h2>
+    <div class="premio-partita">{% include 'premio_partita.html' %}</div>
+    <p id="errore-azione-partita" class="errore" role="alert" hidden></p>
+    <div class="contenuto-multigioco">
     {% if not partita %}
         <p>Cinque domande, quattro opzioni e un punto per risposta corretta.</p>
         {% if numero_partecipanti < 2 %}
@@ -54,4 +57,5 @@
             </form>
         {% endif %}
     {% endif %}
+    </div>
 </section>

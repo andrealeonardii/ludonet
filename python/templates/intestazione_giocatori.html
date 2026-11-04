@@ -1,0 +1,12 @@
+<template id="giocatori-partita">
+    <div data-giocatore="sinistra">
+        {% if giocatori_partita %}{% with giocatore=giocatori_partita[0] %}{% include 'giocatore_partita.html' %}{% endwith %}{% endif %}
+    </div>
+    <div data-giocatore="destra">
+        <div class="gruppo-avversari">
+            {% for giocatore in giocatori_partita[1:] %}
+            <div class="avatar-partecipante">{% include 'giocatore_partita.html' %}</div>
+            {% endfor %}
+        </div>
+    </div>
+</template>

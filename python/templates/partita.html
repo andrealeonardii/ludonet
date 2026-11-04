@@ -1,4 +1,5 @@
 {% if partita %}
+    {% include 'intestazione_giocatori.html' %}
     {% if justone_selezionato %}
         {% include 'justone.html' %}
     {% elif nomi_selezionato %}
@@ -27,8 +28,4 @@
         <p>Servono almeno {{ minimo_giocatori }} giocatori.</p>
         {% endif %}
     </section>
-{% endif %}
-
-{% if premio_monete is not none and premio_monete is defined %}
-<p class="premio-monete" role="status">Partita conclusa: <img class="icona-ludocoin" src="{{ url_for('static', filename='icone/ludocoin.svg') }}" alt="" width="28" height="28"> +{{ premio_monete }} Ludocoin.</p>
 {% endif %}

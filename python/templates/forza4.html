@@ -1,15 +1,26 @@
 {% if forza4_selezionato %}
-<section class="card pannello-giochi" aria-labelledby="titolo-partita" data-in-sala="{{ 1 if partita and partita.in_sala else 0 }}" data-partita-id="{{ partita.id if partita else '' }}">
+<section class="card pannello-giochi forza4-partita" aria-labelledby="titolo-partita" data-gioco="forza4" data-nome-gioco="Forza 4" data-saldo-monete="{{ saldo_monete }}" data-in-sala="{{ 1 if partita and partita.in_sala else 0 }}" data-partita-id="{{ partita.id if partita else '' }}">
+    <div class="testata-tabellone">
     <h2 id="titolo-partita">Forza 4</h2>
     {% if partita %}
-    <p class="legenda-pedine"><span>🔴 {{ partita.rosso }}</span><span>🟡 {{ partita.giallo }}</span></p>
     {% if partita.risultato == 3 %}
     <p class="stato-partita" role="status">Pareggio!</p>
     {% elif partita.risultato != 0 %}
     <p class="stato-partita" role="status">Ha vinto {{ partita.rosso if partita.risultato == 1 else partita.giallo }}!</p>
     {% else %}
     {% set prossimo = partita.rosso if partita.turno == 1 else partita.giallo %}
-    <p class="stato-partita" role="status">Turno di {{ prossimo }} {{ '🔴' if partita.turno == 1 else '🟡' }}</p>
+    <p class="stato-partita" role="status">Turno di {{ 'NickBot AI' if bot and prossimo == bot.username else prossimo }} {{ '🔴' if partita.turno == 1 else '🟡' }}</p>
+    {% endif %}
+    {% endif %}
+    </div>
+    {% if partita %}
+    <div class="stato-bot-forza4">
+    {% if partita.risultato != 0 and premio_monete is not none and premio_monete > 0 %}
+        <p class="monete premio-forza4" role="status" title="Saldo totale: {{ saldo_monete }} Ludocoin">
+            <img class="icona-ludocoin" src="{{ url_for('static', filename='icone/ludocoin.svg') }}" alt="" width="28" height="28">
+            Ludocoin: <strong>+{{ premio_monete }}</strong>
+        </p>
+    {% elif partita.risultato == 0 %}
     {% if bot and prossimo == bot.username %}
         {% if richiesta_bot and richiesta_bot.stato == 'attesa' %}
         <p role="status">NickBot sta pensando…</p>
@@ -23,7 +34,11 @@
         {% endif %}
     {% endif %}
     {% endif %}
-    <form method="post" action="{{ url_for('azione_forza4', azione='muovi') }}">
+    </div>
+    <p id="errore-mossa-forza4" class="errore" role="alert" hidden></p>
+    <div class="campo-forza4">
+    <div class="griglia-forza4">
+    <form method="post" action="{{ url_for('azione_forza4', azione='muovi') }}" data-mossa-forza4>
         <input type="hidden" name="partita_id" value="{{ partita.id }}">
         <input type="hidden" name="griglia" value="{{ partita.griglia }}">
         <div class="colonne-forza4">
@@ -36,11 +51,14 @@
     </form>
     <div class="tabellone-forza4" role="group" aria-label="Tabellone Forza 4: sei righe e sette colonne">
         {% for pedina in partita.griglia %}
-        <span class="pedina pedina-{{ pedina }}" role="img"
+        <span class="pedina pedina-{{ pedina }}" data-valore="{{ pedina }}" role="img"
               aria-label="Riga {{ loop.index0 // 7 + 1 }}, colonna {{ loop.index0 % 7 + 1 }}: {{ 'vuota' if pedina == '0' else ('rossa' if pedina == '1' else 'gialla') }}"></span>
         {% endfor %}
     </div>
+    </div>
+    </div>
     {% endif %}
+    <div class="azioni-forza4">
     {% if numero_partecipanti != 2 %}
     <p>In attesa di un secondo giocatore.</p>
     {% elif not partita or partita.risultato != 0 %}
@@ -52,5 +70,6 @@
         <p>In attesa che l’admin avvii la partita.</p>
         {% endif %}
     {% endif %}
+    </div>
 </section>
 {% endif %}

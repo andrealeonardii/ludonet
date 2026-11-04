@@ -1,6 +1,9 @@
-<section class="card pannello-giochi" aria-labelledby="titolo-nomi"
+<section class="card pannello-giochi partita-multigioco" data-gioco="nomi" data-nome-gioco="Nomi, cose, città" data-saldo-monete="{{ saldo_monete }}" aria-labelledby="titolo-nomi"
          data-in-sala="{{ 1 if partita.in_sala else 0 }}" data-partita-id="{{ partita.id }}">
     <h2 id="titolo-nomi">Nomi, cose, città</h2>
+    <div class="premio-partita">{% include 'premio_partita.html' %}</div>
+    <p id="errore-azione-partita" class="errore" role="alert" hidden></p>
+    <div class="contenuto-multigioco">
     {% if partita.finita %}
         <p class="stato-nomi" role="status">Partita terminata!</p>
         {% set massimo = classifica[0].punti %}
@@ -99,4 +102,5 @@
         <p>Attendi che l’admin prosegua.</p>
         {% endif %}
     {% endif %}
+    </div>
 </section>

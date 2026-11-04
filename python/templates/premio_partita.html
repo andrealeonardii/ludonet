@@ -1,0 +1,6 @@
+{% if premio_monete is defined and premio_monete is not none and premio_monete > 0 %}
+<p class="monete premio-partita-badge" role="status" title="Saldo totale: {{ saldo_monete }} Ludocoin">
+    <img class="icona-ludocoin" src="{{ url_for('static', filename='icone/ludocoin.svg') }}" alt="" width="28" height="28">
+    Ludocoin: <strong>+{{ premio_monete }}</strong>
+</p>
+{% endif %}
