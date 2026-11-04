@@ -14,7 +14,7 @@
             <span class="gioco-testo">
                 <strong>{{ gioco.nome }}</strong>
                 <span>Massimo {{ gioco.max_giocatori }} giocatori</span>
-                {% if gioco.selezionato %}<span class="gioco-selezionato">Selezionato</span>{% endif %}
+                <span class="gioco-selezionato"{% if not gioco.selezionato %} aria-hidden="true"{% endif %}>Selezionato</span>
             </span>
         </span>
     {% endset %}

@@ -306,6 +306,10 @@ main {
 }
 
 /* Sala: niente sidebar; intestazione e contenuti in un flusso chiaro. */
+body:has(.layout-stanza) {
+    padding: 16px;
+}
+
 .layout-stanza {
     display: block;
     width: min(900px, 100%);
@@ -316,27 +320,29 @@ main {
     top: auto;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 18px;
-    padding: 16px 20px 20px;
+    gap: 6px;
+    margin-bottom: 12px;
+    padding: 10px 18px 12px;
 }
 
 .intestazione-stanza .marchio {
     align-self: center;
     justify-content: center;
     margin: 0;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
 }
 
 .intestazione-stanza .logo {
-    width: 64px;
-    height: 64px;
+    width: 44px;
+    height: 44px;
 }
 
 #saluto-stanza {
     align-self: center;
     margin: 0;
     text-align: center;
+    font-size: .9rem;
+    line-height: 1.35;
 }
 
 .comandi-intestazione {
@@ -344,8 +350,8 @@ main {
     width: 100%;
     grid-template-columns: minmax(170px, 1fr) minmax(120px, .7fr) minmax(190px, 1fr);
     align-items: center;
-    gap: 18px;
-    padding-top: 12px;
+    gap: 12px;
+    padding-top: 8px;
     border-top: 1px solid var(--line);
 }
 
@@ -357,7 +363,7 @@ main {
 .avatar-intestazione {
     display: grid;
     justify-items: center;
-    gap: 5px;
+    gap: 3px;
     color: var(--muted);
     font-size: .78rem;
     font-weight: 700;
@@ -388,12 +394,14 @@ main {
     align-self: center;
     width: fit-content;
     margin: 0;
+    padding: 6px 10px;
+    font-size: .9rem;
 }
 
 #sala {
     display: grid;
     grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr);
-    gap: 18px;
+    gap: 12px;
     align-items: stretch;
 }
 
@@ -401,7 +409,16 @@ main {
     width: 100%;
     min-width: 0;
     height: 100%;
-    padding: 20px;
+    padding: 14px 16px;
+}
+
+#sala h2 {
+    margin-bottom: 10px;
+}
+
+#giochi > p {
+    margin-bottom: 12px;
+    font-size: .85rem;
 }
 
 #partecipanti {
@@ -427,17 +444,21 @@ main {
 
 .catalogo-giochi {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: 8px;
 }
 
 .scheda-gioco {
-    min-height: 86px;
-    padding: 11px 13px;
+    min-height: 76px;
+    padding: 8px 10px;
+}
+
+.gioco-selezionato[aria-hidden="true"] {
+    visibility: hidden;
 }
 
 .icona-gioco {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
 }
 
 .logout-stanza {
@@ -447,14 +468,19 @@ main {
 /* Partite: pannello contenuto e visibile senza scroll eccessivo. */
 #partita {
     width: min(700px, 100%);
-    margin: 18px auto 0;
+    margin: 12px auto 0;
+}
+
+/* Lo spazio per l'avvio rimane stabile anche prima di scegliere il gioco. */
+#sala:not([hidden]) ~ #partita:not([hidden]) {
+    min-height: 80px;
 }
 
 .avvio-gioco {
     display: grid;
     justify-items: center;
     gap: 10px;
-    padding: 2px 16px 8px;
+    padding: 0 16px;
     text-align: center;
 }
 
@@ -714,4 +740,30 @@ main {
         padding-top: 10px;
         padding-bottom: 10px;
     }
+}
+
+/* Sui portatili bassi l'intestazione occupa due sole righe. */
+@media (max-height: 680px) and (min-width: 701px) {
+    .intestazione-stanza {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-areas:
+            "brand greeting coins"
+            "controls controls controls";
+        gap: 6px 12px;
+    }
+
+    .intestazione-stanza .marchio {
+        grid-area: brand;
+        font-size: 1.25rem;
+    }
+
+    .intestazione-stanza .logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    #saluto-stanza { grid-area: greeting; }
+    .intestazione-stanza .monete { grid-area: coins; }
+    .comandi-intestazione { grid-area: controls; }
 }
