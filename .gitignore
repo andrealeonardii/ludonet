@@ -4,6 +4,8 @@
 !.env.example
 .DS_Store
 Thumbs.db
+restart.stdout.log
+restart.stderr.log
 
 # Python
 __pycache__/

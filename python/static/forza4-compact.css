@@ -1,0 +1,241 @@
+/* Vista Forza 4 compatta: l'intera partita rimane entro lo schermo. */
+body.vista-forza4 {
+    min-height: 100vh;
+    padding: 8px 14px;
+    overflow: hidden;
+}
+
+.vista-forza4 .layout-stanza {
+    width: min(920px, 100%);
+    min-height: calc(100vh - 16px);
+}
+
+.vista-forza4 #torna-stanza {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 20;
+    width: auto;
+    margin: 0;
+}
+
+.vista-forza4 #torna-stanza button {
+    min-height: 34px;
+    padding: 6px 12px;
+    font-size: .82rem;
+}
+
+.vista-forza4 #partita {
+    width: min(720px, 100%);
+    margin: 0 auto;
+}
+
+.vista-forza4 .premio-monete,
+.vista-forza4 .monete {
+    display: none !important;
+}
+
+.forza4-gioco {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-height: calc(100vh - 16px);
+    min-height: 0;
+    padding: 8px 14px !important;
+    overflow: hidden;
+}
+
+.intestazione-forza4 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 18px;
+    min-height: 102px;
+    padding: 0 12px 5px;
+    border-bottom: 1px solid var(--line);
+}
+
+.giocatore-forza4 {
+
+
+
+    display: grid;
+    justify-items: start;
+    gap: 2px;
+    min-width: 0;
+    margin: 0;
+}
+
+.giocatore-avversario {
+
+    justify-items: end;
+    text-align: right;
+}
+
+.avatar-partita {
+    position: relative;
+    flex: 0 0 58px;
+    width: 58px;
+    height: 96px;
+}
+
+.avatar-partita img {
+    position: absolute;
+    pointer-events: none;
+}
+
+.giocatore-forza4 figcaption {
+    min-width: 0;
+    margin: 0;
+}
+
+.giocatore-forza4 figcaption strong,
+.giocatore-forza4 figcaption span {
+    display: block;
+}
+
+.giocatore-forza4 figcaption strong {
+    overflow: hidden;
+    font-size: .95rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.giocatore-forza4 figcaption span {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+.titolo-forza4 {
+    text-align: center;
+}
+
+.titolo-forza4 h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.titolo-forza4 > span {
+    display: block;
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .14em;
+}
+
+.forza4-gioco .stato-partita,
+.forza4-gioco > p[role="status"] {
+    margin: 1px 0;
+    text-align: center;
+}
+
+.forza4-gioco form {
+    margin: 0;
+}
+
+.vista-forza4 .colonne-forza4,
+.vista-forza4 .tabellone-forza4 {
+    width: min(390px, calc((100vh - 225px) * 7 / 6), 100%);
+}
+
+.vista-forza4 .colonne-forza4 {
+    margin: 0 auto;
+    gap: 4px;
+}
+
+.vista-forza4 .colonne-forza4 button {
+    min-height: 28px;
+    padding: 2px;
+    font-size: .72rem;
+}
+
+.vista-forza4 .tabellone-forza4 {
+    gap: 4px;
+    margin: 0 auto;
+    padding: 7px;
+    border-radius: 12px;
+}
+
+@media (max-height: 700px) and (min-width: 601px) {
+    .intestazione-forza4 {
+        min-height: 82px;
+    }
+
+    .avatar-partita {
+        flex-basis: 46px;
+        width: 46px;
+        height: 78px;
+    }
+
+    .titolo-forza4 h2 {
+        font-size: 1.3rem;
+    }
+
+    .vista-forza4 .colonne-forza4,
+    .vista-forza4 .tabellone-forza4 {
+        width: min(350px, calc((100vh - 185px) * 7 / 6), 100%);
+    }
+}
+
+@media (max-width: 600px) {
+    body.vista-forza4 {
+        padding: 5px;
+    }
+
+    .vista-forza4 .layout-stanza {
+        min-height: calc(100vh - 10px);
+    }
+
+    .forza4-gioco {
+        max-height: calc(100vh - 10px);
+        padding: 6px 8px !important;
+    }
+
+    .intestazione-forza4 {
+        gap: 6px;
+        min-height: 78px;
+        padding-inline: 2px;
+    }
+
+    .avatar-partita {
+        flex-basis: 40px;
+        width: 40px;
+        height: 68px;
+    }
+
+    .giocatore-forza4 {
+        gap: 5px;
+    }
+
+    .giocatore-forza4 figcaption strong {
+        max-width: 80px;
+        font-size: .76rem;
+    }
+
+    .giocatore-forza4 figcaption span {
+        font-size: .65rem;
+    }
+
+    .titolo-forza4 h2 {
+        font-size: 1.05rem;
+    }
+
+    .vista-forza4 #torna-stanza {
+        top: 4px;
+        left: 4px;
+    }
+
+    .vista-forza4 #torna-stanza button {
+        min-height: 28px;
+        padding: 4px 7px;
+        font-size: .68rem;
+    }
+
+    .vista-forza4 .colonne-forza4,
+    .vista-forza4 .tabellone-forza4 {
+        width: min(100%, calc((100vh - 180px) * 7 / 6));
+    }
+}

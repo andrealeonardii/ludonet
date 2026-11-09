@@ -21,12 +21,22 @@
         {% endif %}
         {% if partita.valutato %}
             <h3>Risultati della manche</h3>
-            <ul class="risultati-nomi">
-            {% for risposta in risposte %}
-                <li><strong>{{ risposta.username }} · {{ categorie[risposta.categoria] }}</strong>
-                    <span>{{ risposta.testo or '—' }} · {{ risposta.punti }} punti</span></li>
+            <div class="risultati-per-giocatore">
+            {% for gruppo in risposte|groupby('username', case_sensitive=True) %}
+                <section class="scheda-risposte-giocatore colore-giocatore-{{ loop.index0 % 8 }}">
+                    <h4>{{ gruppo.grouper }}</h4>
+                    <ul>
+                    {% for categoria, etichetta in categorie.items() %}
+                    {% for risposta in gruppo.list if risposta.categoria == categoria %}
+                        <li><span class="categoria-risultato">{{ etichetta }}</span>
+                            <strong>{{ risposta.testo or '—' }}</strong>
+                            <span class="punti-risultato">{{ risposta.punti }} punti</span></li>
+                    {% endfor %}
+                    {% endfor %}
+                    </ul>
+                </section>
             {% endfor %}
-            </ul>
+            </div>
         {% elif tutti_pronti %}
             <h3>Vota le risposte</h3>
             <p>Servono {{ soglia_voti }} 👎 degli avversari per annullare una parola. Vuote o con iniziale errata valgono 0; parole uguali valide valgono 5, le altre 10.</p>
