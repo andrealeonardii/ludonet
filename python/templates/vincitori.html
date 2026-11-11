@@ -1,0 +1,12 @@
+<section class="banner-vincitori" aria-label="{{ titolo_vincitori }}">
+    <p class="titolo-vincitori">🏆 {{ titolo_vincitori }}</p>
+    <div class="avatar-vincitori">
+        {% for nome_vincitore in nomi_vincitori %}
+            {% for giocatore in giocatori_partita if giocatore.username == nome_vincitore %}
+            <div class="vincitore">
+                {% include 'giocatore_partita.html' %}
+            </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</section>

@@ -5,8 +5,14 @@
     <p id="errore-azione-partita" class="errore" role="alert" hidden></p>
     <div class="contenuto-multigioco">
     <p class="punteggio-justone">Punteggio della squadra: {{ punteggio }} / {{ numero_manche }}</p>
-    {% if partita.finita %}
-        <p class="stato-justone" role="status">Partita terminata!</p>
+        {% if partita.finita %}
+        {% set squadra = namespace(nomi=[]) %}
+        {% for giocatore in giocatori_partita %}
+            {% set squadra.nomi = squadra.nomi + [giocatore.username] %}
+        {% endfor %}
+        {% set titolo_vincitori = 'Risultato della squadra: ' ~ punteggio ~ ' / ' ~ numero_manche %}
+        {% set nomi_vincitori = squadra.nomi %}
+        {% include 'vincitori.html' %}
         {% if utente.is_admin %}
         <form method="post" action="{{ url_for('azione_justone', azione='avvia') }}">
             <button class="btn-primary">Nuova partita</button>

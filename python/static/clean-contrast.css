@@ -103,6 +103,10 @@ button:hover:not(:disabled) {
     box-shadow: 0 5px 13px rgba(49, 94, 214, .16);
 }
 
+.scheda-gioco:hover:not(:disabled) .gioco-testo strong {
+    color: #fff;
+}
+
 input {
     border: 1px solid #cfd7e6;
     background: #f9fbff;
@@ -214,10 +218,84 @@ input:focus {
     color: #984d32;
 }
 
-.risultati-nomi li,
+.risultati-nomi li {
+    border-left: 4px solid var(--green);
+}
+
+.classifica-quiz,
+.classifica-nomi {
+    grid-template-columns: 1fr;
+}
+
 .classifica-quiz .riga-stanza,
 .classifica-nomi .riga-stanza {
-    border-left: 4px solid var(--green);
+    border-left: 4px solid var(--colore-giocatore);
+    background: var(--sfondo-giocatore);
+}
+
+.classifica-quiz .riga-stanza div,
+.classifica-nomi .riga-stanza div {
+    color: var(--colore-giocatore);
+    font-weight: 700;
+}
+
+.posizione-classifica {
+    display: inline-block;
+    min-width: 2rem;
+    color: var(--colore-giocatore);
+}
+
+.banner-vincitori {
+    display: flex;
+    width: 100%;
+    margin: 10px auto 18px;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.contenuto-multigioco .titolo-vincitori,
+.titolo-vincitori {
+    margin: 0 0 12px;
+    color: var(--blue-dark);
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+.avatar-vincitori {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px 36px;
+}
+
+.vincitore {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.vincitore .avatar-partita {
+    width: 44px;
+    height: 80px;
+}
+
+.vincitore .nome-giocatore-partita {
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+    text-align: center;
+}
+
+.contenuto-multigioco .nomi-vincitori,
+.nomi-vincitori {
+    margin: 10px 0 0;
+    color: var(--ink);
+    font-size: 1rem;
+    font-weight: 800;
+    text-align: center;
 }
 
 .voto-contrario input:checked + span {

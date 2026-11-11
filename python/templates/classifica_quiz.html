@@ -1,6 +1,14 @@
 <h3>Classifica{{ ' finale' if partita.finita else '' }}</h3>
 <ul class="elenco-stanze classifica-quiz">
+    {% set giocatori_ordinati = classifica|sort(attribute='username', case_sensitive=True) %}
     {% for giocatore in classifica %}
-    <li class="riga-stanza"><div>{{ giocatore.username }}</div><span>{{ giocatore.punti }} punti</span></li>
+    {% set colore = namespace(indice=0) %}
+    {% for giocatore_colore in giocatori_ordinati %}
+        {% if giocatore_colore.username == giocatore.username %}{% set colore.indice = loop.index0 %}{% endif %}
+    {% endfor %}
+    <li class="riga-stanza colore-giocatore-{{ colore.indice % 8 }}">
+        <div><strong class="posizione-classifica">{{ loop.index }}°</strong> {{ giocatore.username }}</div>
+        <span>{{ giocatore.punti }} punti</span>
+    </li>
     {% endfor %}
 </ul>

@@ -17,13 +17,14 @@
         <p>In attesa che l’admin avvii il quiz.</p>
         {% endif %}
     {% elif partita.finita %}
-        <p class="stato-quiz" role="status">Quiz terminato!</p>
-        {% set massimo = classifica[0].punti %}
-        <p>Vincitori:
-            {% for giocatore in classifica if giocatore.punti == massimo %}
-                {{ giocatore.username }}{% if not loop.last %}, {% endif %}
-            {% endfor %}
-        </p>
+                {% set massimo = classifica[0].punti %}
+        {% set vincitori = namespace(nomi=[]) %}
+        {% for giocatore in classifica if giocatore.punti == massimo %}
+            {% set vincitori.nomi = vincitori.nomi + [giocatore.username] %}
+        {% endfor %}
+        {% set titolo_vincitori = 'Vincitore' if vincitori.nomi|length == 1 else 'Vincitori' %}
+        {% set nomi_vincitori = vincitori.nomi %}
+        {% include 'vincitori.html' %}
         {% include 'classifica_quiz.html' %}
         {% if utente.is_admin %}
         <form method="post" action="{{ url_for('azione_quiz', azione='avvia') }}">

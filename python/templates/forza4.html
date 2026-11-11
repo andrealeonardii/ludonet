@@ -3,24 +3,28 @@
     <div class="testata-tabellone">
     <h2 id="titolo-partita">Forza 4</h2>
     {% if partita %}
-    {% if partita.risultato == 3 %}
-    <p class="stato-partita" role="status">Pareggio!</p>
-    {% elif partita.risultato != 0 %}
-    <p class="stato-partita" role="status">Ha vinto {{ partita.rosso if partita.risultato == 1 else partita.giallo }}!</p>
+        {% if partita.risultato != 0 %}
+    <p class="stato-partita" role="status">Partita terminata</p>
     {% else %}
     {% set prossimo = partita.rosso if partita.turno == 1 else partita.giallo %}
     <p class="stato-partita" role="status">Turno di {{ 'NickBot AI' if bot and prossimo == bot.username else prossimo }} {{ '🔴' if partita.turno == 1 else '🟡' }}</p>
     {% endif %}
     {% endif %}
-    </div>
+        </div>
+    {% if partita and partita.risultato != 0 %}
+        <div class="premio-partita premio-finale-forza4">{% include 'premio_partita.html' %}</div>
+        {% if partita.risultato == 3 %}
+            {% set titolo_vincitori = 'Pareggio' %}
+            {% set nomi_vincitori = [partita.rosso, partita.giallo] %}
+        {% else %}
+            {% set titolo_vincitori = 'Vincitore' %}
+            {% set nomi_vincitori = [partita.rosso if partita.risultato == 1 else partita.giallo] %}
+        {% endif %}
+        {% include 'vincitori.html' %}
+    {% endif %}
     {% if partita %}
     <div class="stato-bot-forza4">
-    {% if partita.risultato != 0 and premio_monete is not none and premio_monete > 0 %}
-        <p class="monete premio-forza4" role="status" title="Saldo totale: {{ saldo_monete }} Ludocoin">
-            <img class="icona-ludocoin" src="{{ url_for('static', filename='icone/ludocoin.svg') }}" alt="" width="28" height="28">
-            Ludocoin: <strong>+{{ premio_monete }}</strong>
-        </p>
-    {% elif partita.risultato == 0 %}
+        {% if partita.risultato == 0 %}
     {% if bot and prossimo == bot.username %}
         {% if richiesta_bot and richiesta_bot.stato == 'attesa' %}
         <p role="status">NickBot sta pensando…</p>
