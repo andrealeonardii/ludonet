@@ -254,6 +254,18 @@ input:focus {
     text-align: center;
 }
 
+.forza4-partita:has(.banner-vincitori) .banner-vincitori {
+    margin-bottom: 4px;
+}
+
+.forza4-partita:has(.banner-vincitori) .stato-bot-forza4 {
+    display: none;
+}
+
+.forza4-partita:has(.banner-vincitori) .griglia-forza4 {
+    width: min(500px, 94cqw, calc((100cqh - 70px) * 7 / 6));
+}
+
 .contenuto-multigioco .titolo-vincitori,
 .titolo-vincitori {
     margin: 0 0 12px;
